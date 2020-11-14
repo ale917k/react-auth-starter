@@ -1,0 +1,25 @@
+# <IfModule mod_rewrite.c>
+	# RewriteEngine On
+
+ 	# -- Redirection to https (optional):
+	# Please notice: You have to set your base-href attribute correctly:
+	# a) If your app is on the root of the domain, you can just use "/"
+	# b) If not, you need to set "https://" instead of "http://" in your base-href attribute
+	# If you need this, uncomment the next two commands
+
+	# RewriteCond %{HTTPS} !on
+  	# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+	# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+	# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+
+	# RewriteRule ^.*$ - [NC,L]
+	# RewriteRule ^(.*) index.html [NC,L]
+
+        
+
+        Options -MultiViews
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^ index.html [QSA,L]
+# </IfModule>
