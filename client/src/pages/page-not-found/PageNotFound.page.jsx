@@ -7,5 +7,5 @@ import "./PageNotFound.styles.scss";
  * @return {JSX} - PageNotFound message.
  */
 export default function PageNotFound() {
-  return <div className="page-not-found">PageNotFound Page</div>;
+  return <div className="page-not-found">404 | Page Not Found</div>;
 }

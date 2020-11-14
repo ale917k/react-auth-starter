@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Header from "../../components/global/header/Header.component";
 import Footer from "../../components/global/footer/Footer.component";
+import Spinner from "../../components/global/spinner/Spinner.component";
 
 import "./App.styles.scss";
 
@@ -30,7 +31,7 @@ export default function App() {
         <Switch>
           {routes.map(({ path, Component }) => (
             <Route key={path} exact path={path}>
-              <Suspense fallback={<div></div>}>
+              <Suspense fallback={<Spinner />}>
                 <Component />
               </Suspense>
             </Route>
@@ -39,7 +40,7 @@ export default function App() {
           <Route
             path="*"
             render={() => (
-              <Suspense fallback={<div></div>}>
+              <Suspense fallback={<Spinner />}>
                 <PageNotFound />
               </Suspense>
             )}
