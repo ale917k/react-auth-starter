@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./pages/app/App";
 
+import { StoreProvider } from "./context/Store";
+
 import "./styles/index.styles.scss";
 
 import * as serviceWorker from "./serviceWorker";
@@ -11,9 +13,11 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/">
-      <App />
-    </BrowserRouter>
+    <StoreProvider>
+      <BrowserRouter basename="/">
+        <App />
+      </BrowserRouter>
+    </StoreProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

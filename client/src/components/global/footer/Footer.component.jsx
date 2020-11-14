@@ -23,6 +23,7 @@ export default function Footer() {
             href="https://www.alessiopetrin.com"
             rel="noopener noreferrer"
             target="_blank"
+            className="link"
           >
             AP
           </a>

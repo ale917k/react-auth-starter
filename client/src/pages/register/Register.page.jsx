@@ -1,18 +1,23 @@
-import React, { useState } from "react";
-// import { renderEmail } from "react-html-email";
+import React, { useState, useContext } from "react";
+import { renderEmail } from "react-html-email";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
-// import ContactEmail from "./contactEmail";
+import ContactEmail from "../../components/email/registration-confirmation/RegistrationConfirmation.email";
+
+import { Store } from "../../context/Store";
 
 import "../../styles/form.styles.scss";
 import "./Register.styles.scss";
 
 /**
  * Register page for creating new accounts on form submission.
- * @return {JSX} - Controlled form which triggers AddUser event on form submission.
+ * @return {JSX} - Controlled form which triggers a POST request at /users on form submission.
  */
 export default function Register() {
+  // Context User Store
+  const { dispatch } = useContext(Store);
+
   // New User data used upon User registration
   const initialForm = {
     email: "",
@@ -39,48 +44,50 @@ export default function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // const messageHtml = renderEmail(<ContactEmail {...form} />);
+    const messageHtml = renderEmail(<ContactEmail {...form} />);
 
-    setAlertMessage({
-      isActive: true,
-      severity: "error",
-      message: "An error occurred, please try again later.",
+    const data = await fetch("http://localhost:5000/users", {
+      method: "post",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        messageHtml,
+      }),
     });
-    console.log("Form: ", form);
-
-    // const data = await fetch("/api/send_email", {
-    //   method: "post",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     email: form.email,
-    //     messageHtml,
-    //   }),
-    // });
-    // try {
-    //   // const isEmailSent = await data.json();
-    //   const isEmailSent = true;
-    //   isEmailSent.error
-    //     ? setAlertMessage({
-    //         isActive: true,
-    //         severity: "error",
-    //         message:
-    //           "Ooops, there seems to be a problem.. Please try later or drop me a call at ",
-    //       })
-    //     : setAlertMessage({
-    //         isActive: true,
-    //         severity: "success",
-    //         message:
-    //           "Thank you for being in touch with me. I'll be back to you sooner possible! If urgent, please drop me a call at ",
-    //       });
-    // } catch (err) {
-    //   setAlertMessage({
-    //     isActive: true,
-    //     severity: "error",
-    //     message:
-    //       "Ooops, there seems to be a problem.. Please try later or drop me a call at ",
-    //   });
-    // }
-    // setForm(initialForm);
+    try {
+      const signedUser = await data.json();
+      if (signedUser.error) {
+        if (signedUser.error.name === "UserExistsError") {
+          setAlertMessage({
+            isActive: true,
+            severity: "error",
+            message: "An user with the following credentials already exists.",
+          });
+        } else {
+          setAlertMessage({
+            isActive: true,
+            severity: "error",
+            message: "An error occurred, please try again later.",
+          });
+        }
+      } else {
+        setAlertMessage(initialAlertMessage);
+        console.log(signedUser);
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            ...signedUser.result,
+          },
+        });
+      }
+    } catch (err) {
+      setAlertMessage({
+        isActive: true,
+        severity: "error",
+        message: `An error occurred, please try again later. Ref: ${err}`,
+      });
+    }
+    setForm(initialForm);
   };
 
   return (
@@ -116,7 +123,7 @@ export default function Register() {
               onChange={handleChange}
             />
             <button type="submit" className="primary-button">
-              Submit
+              Create new account
             </button>
           </form>
         </div>
