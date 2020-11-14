@@ -53,25 +53,6 @@ code {
     monospace;
 }
 
-h1 {
-  font-size: var(--font-size-xl);
-  margin-bottom: 2.074rem;
-}
-
-h2 {
-  font-size: var(--font-size-lg);
-  margin-bottom: 1.44rem;
-}
-
-h3 {
-  font-size: var(--font-size-md);
-  margin-bottom: 1rem;
-}
-
-p {
-  line-height: 1.5em;
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -80,3 +61,6 @@ a {
 img {
   width: 100%;
 }
+
+@import "./typography.styles.scss";
+@import "./buttons.styles.scss";
