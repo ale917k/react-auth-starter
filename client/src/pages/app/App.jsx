@@ -9,13 +9,14 @@ import "./App.styles.scss";
 
 const Landing = lazy(() => import("../landing/Landing.page"));
 const Home = lazy(() => import("../home/Home.page"));
+const Register = lazy(() => import("../register/Register.page"));
 const PageNotFound = lazy(() => import("../page-not-found/PageNotFound.page"));
 
 // Lazy loaded App routes
 const routes = [
   { path: "/", name: "Landing", Component: Landing },
   { path: "/home", name: "Home", Component: Home },
-  // { path: "/register", name: "Register", Component: Register },
+  { path: "/register", name: "Register", Component: Register },
 ];
 
 /**

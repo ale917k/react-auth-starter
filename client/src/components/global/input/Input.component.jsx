@@ -1,0 +1,41 @@
+import React from "react";
+
+import "./Input.styles.scss";
+
+/**
+ * Standard Input component, reusable for both Inputs and Textareas.
+ * @param {Object} props - Props passed from parent component containing input attributes.
+ * @return {JSX} - Controlled input element.
+ */
+export default function Input(props) {
+  // Check if value entered is a valid email. Ref: http://emailregex.com/
+  let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+
+  const handleChange = (event) => {
+    props.onChange(event);
+
+    if (
+      event.target.type === "email" &&
+      !emailPattern.test(event.target.value)
+    ) {
+      event.target.setCustomValidity("Please select a valid email address.");
+    } else {
+      event.target.setCustomValidity("");
+    }
+  };
+
+  return (
+    <div className="input">
+      <input
+        placeholder=" "
+        {...props}
+        onChange={handleChange}
+        minLength={props.type === "password" ? 8 : undefined}
+      />
+      <label>
+        {props.name}
+        {props.required && " *"}
+      </label>
+    </div>
+  );
+}
