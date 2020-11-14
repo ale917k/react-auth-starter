@@ -22,35 +22,32 @@ const routes = [
  * @return {JSX} - Header, Footer and main content of the App.
  */
 export default function App() {
-  // Group all path names for available route paths
-  const mappedRoutes = routes.map(({ path }) => path);
-  const availableRoutes = mappedRoutes
-    .join() // Join all path in unique string
-    .replace(/[/]/g, "|") // Replace '/' with '|'
-    .replace(/,/g, "") // Remove commas created joining array elements (paths)
-    .replace(/\|\|/g, "|"); // Replace first '|' occurence to be single instead of '||'
-
   return (
     <div className="App">
-      <Switch>
-        <Route exact path={`/(${availableRoutes})`}>
-          <Header />
-          {routes.map(({ path, Component }) => (
-            <Suspense key={path} fallback={<div></div>}>
-              <Route exact path={path}>
-                <main className="main">
-                  <Component />
-                </main>
-              </Route>
-            </Suspense>
-          ))}
-          <Footer />
-        </Route>
+      <Header />
 
-        <Suspense fallback={<div></div>}>
-          <Route path="*" component={PageNotFound} />
-        </Suspense>
-      </Switch>
+      <main className="main">
+        <Switch>
+          {routes.map(({ path, Component }) => (
+            <Route key={path} exact path={path}>
+              <Suspense fallback={<div></div>}>
+                <Component />
+              </Suspense>
+            </Route>
+          ))}
+
+          <Route
+            path="*"
+            render={() => (
+              <Suspense fallback={<div></div>}>
+                <PageNotFound />
+              </Suspense>
+            )}
+          />
+        </Switch>
+      </main>
+
+      <Footer />
     </div>
   );
 }
