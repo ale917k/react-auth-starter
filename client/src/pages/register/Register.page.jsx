@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { renderEmail } from "react-html-email";
+import { Store } from "../../context/Store";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
 import ContactEmail from "../../components/email/registration-confirmation/RegistrationConfirmation.email";
-
-import { Store } from "../../context/Store";
 
 import "../../styles/form.styles.scss";
 import "./Register.styles.scss";
@@ -15,7 +14,7 @@ import "./Register.styles.scss";
  * @return {JSX} - Controlled form which triggers a POST request at /users on form submission.
  */
 export default function Register() {
-  // Context User Store
+  // Context for dispatching User updates on Store
   const { dispatch } = useContext(Store);
 
   // New User data used upon User registration
@@ -40,7 +39,7 @@ export default function Register() {
     setForm({ ...form, [name]: value });
   };
 
-  // Trigger Add User action on form submit
+  // Trigger POST request at /users on form submission for creating new user
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -71,7 +70,6 @@ export default function Register() {
           });
         }
       } else {
-        setAlertMessage(initialAlertMessage);
         dispatch({
           type: "SET_USER",
           payload: {
@@ -86,7 +84,6 @@ export default function Register() {
         message: `An error occurred, please try again later. Ref: ${err}`,
       });
     }
-    setForm(initialForm);
   };
 
   return (

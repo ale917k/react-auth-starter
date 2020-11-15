@@ -1,9 +1,8 @@
 import React, { useState, useContext } from "react";
+import { Store } from "../../context/Store";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
-
-import { Store } from "../../context/Store";
 
 import "../../styles/form.styles.scss";
 import "./Login.styles.scss";
@@ -13,7 +12,7 @@ import "./Login.styles.scss";
  * @return {JSX} - Controlled form which triggers a POST request at /users/signin on form submission.
  */
 export default function Login() {
-  // Context User Store
+  // Context for dispatching User updates on Store
   const { dispatch } = useContext(Store);
 
   // New User data used upon User registration
@@ -37,7 +36,7 @@ export default function Login() {
     setForm({ ...form, [name]: value });
   };
 
-  // Trigger Add User action on form submit
+  // Trigger POST request at /users/signin on form submission for logging user
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -47,20 +46,22 @@ export default function Login() {
       body: JSON.stringify(form),
     });
     try {
-      const signedUser = await data.json();
-      signedUser.error
-        ? setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message: "An error occurred, please try again later.",
-          })
-        : setAlertMessage(initialAlertMessage) &&
-          dispatch({
-            type: "SET_USER",
-            payload: {
-              ...signedUser.result,
-            },
-          });
+      const loggedUser = await data.json();
+      console.log(loggedUser);
+      if (loggedUser.error) {
+        setAlertMessage({
+          isActive: true,
+          severity: "error",
+          message: "An error occurred, please try again later.",
+        });
+      } else {
+        dispatch({
+          type: "SET_USER",
+          payload: {
+            ...loggedUser.result,
+          },
+        });
+      }
     } catch (err) {
       setAlertMessage({
         isActive: true,
@@ -68,7 +69,6 @@ export default function Login() {
         message: `An error occurred, please try again later. Ref: ${err}`,
       });
     }
-    setForm(initialForm);
   };
 
   return (

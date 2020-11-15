@@ -9,6 +9,7 @@ import "./Footer.styles.scss";
  * @return {JSX} - Copyright infos.
  */
 export default function Footer() {
+  // Dynamic value retrieved from current year for up-to-date copyright date
   const year = new Date().getFullYear();
 
   return (

@@ -23,6 +23,7 @@ export default function Header() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Logout User from App
   const logout = () => {
     dispatch({
       type: "SET_USER",

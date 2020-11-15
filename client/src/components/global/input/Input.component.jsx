@@ -11,6 +11,7 @@ export default function Input(props) {
   // Check if value entered is a valid email. Ref: http://emailregex.com/
   let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
 
+  // Updates handleChange parent function and checks for deep email validation
   const handleChange = (event) => {
     props.onChange(event);
 
