@@ -1,26 +1,23 @@
 import React, { useState, useContext } from "react";
-import { renderEmail } from "react-html-email";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
-import ContactEmail from "../../components/email/registration-confirmation/RegistrationConfirmation.email";
 
 import { Store } from "../../context/Store";
 
 import "../../styles/form.styles.scss";
-import "./Register.styles.scss";
+import "./Login.styles.scss";
 
 /**
- * Register page for creating new accounts on form submission.
- * @return {JSX} - Controlled form which triggers a POST request at /users on form submission.
+ * Login page for logging into user account on form submission.
+ * @return {JSX} - Controlled form which triggers a POST request at /users/signin on form submission.
  */
-export default function Register() {
+export default function Login() {
   // Context User Store
   const { dispatch } = useContext(Store);
 
   // New User data used upon User registration
   const initialForm = {
-    email: "",
     username: "",
     password: "",
   };
@@ -44,41 +41,26 @@ export default function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const messageHtml = renderEmail(<ContactEmail {...form} />);
-
-    const data = await fetch("http://localhost:5000/users", {
+    const data = await fetch("http://localhost:5000/users/signin", {
       method: "post",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        messageHtml,
-      }),
+      body: JSON.stringify(form),
     });
     try {
       const signedUser = await data.json();
-      if (signedUser.error) {
-        if (signedUser.error.name === "UserExistsError") {
-          setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message: "An user with the following credentials already exists.",
-          });
-        } else {
-          setAlertMessage({
+      signedUser.error
+        ? setAlertMessage({
             isActive: true,
             severity: "error",
             message: "An error occurred, please try again later.",
+          })
+        : setAlertMessage(initialAlertMessage) &&
+          dispatch({
+            type: "SET_USER",
+            payload: {
+              ...signedUser.result,
+            },
           });
-        }
-      } else {
-        setAlertMessage(initialAlertMessage);
-        dispatch({
-          type: "SET_USER",
-          payload: {
-            ...signedUser.result,
-          },
-        });
-      }
     } catch (err) {
       setAlertMessage({
         isActive: true,
@@ -90,23 +72,16 @@ export default function Register() {
   };
 
   return (
-    <section className="register">
-      <Container className="register-container">
+    <section className="login">
+      <Container className="login-container">
         <div className="card">
-          <h2>Register</h2>
+          <h2>Login</h2>
 
           {alertMessage.isActive && (
             <div className="alert error">{alertMessage.message}</div>
           )}
 
           <form onSubmit={handleSubmit}>
-            <Input
-              type="email"
-              name="email"
-              value={form.email}
-              required
-              onChange={handleChange}
-            />
             <Input
               type="text"
               name="username"
@@ -122,7 +97,7 @@ export default function Register() {
               onChange={handleChange}
             />
             <button type="submit" className="primary-button">
-              Create new account
+              Login
             </button>
           </form>
         </div>

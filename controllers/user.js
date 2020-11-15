@@ -63,8 +63,8 @@ router
                 message: "Created User Successfully",
                 result: {
                   ...result._doc,
-                  salt: undefined,
                   hash: undefined,
+                  salt: undefined,
                 },
               });
             }
@@ -93,8 +93,7 @@ router.post("/signin", (req, res) => {
       })(req, res, () => {
         res.status(201).json({
           message: "Signed in User Successfully",
-          result: result,
-          data: req.user,
+          result: { ...req.user._doc, hash: undefined, salt: undefined },
         });
       });
     } else {

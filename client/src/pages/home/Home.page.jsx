@@ -3,8 +3,8 @@ import React from "react";
 import "./Home.styles.scss";
 
 /**
- * Basic Homepage.
- * @return {JSX} - Homepage content.
+ * Basic Home page.
+ * @return {JSX} - Home page content.
  */
 export default function Home() {
   return <div className="home">Home Page</div>;
