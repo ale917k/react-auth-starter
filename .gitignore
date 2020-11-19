@@ -6,6 +6,10 @@
 .pnp.js
 /public/images
 
+# database testing
+/database/data
+mongod.log
+
 # testing
 /coverage
 

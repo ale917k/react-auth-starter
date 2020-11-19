@@ -2,12 +2,11 @@ let express = require("express"),
   cors = require("cors"),
   morgan = require("morgan"),
   mongoose = require("mongoose"),
-  dbConfig = require("./database/db"),
   passport = require("passport");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
-const userAPI = require("./controllers/user");
+const userAPI = require("./routes/user");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -23,16 +22,16 @@ app.use("/users", userAPI);
 // MongoDB Configuration
 mongoose.Promise = global.Promise;
 mongoose
-  .connect(dbConfig.db, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(
     () => {
-      console.log("Database successfully connected");
+      console.log("MongoDB successfully connected");
     },
     (error) => {
-      console.log("Database could not be connected: " + error);
+      console.log("MongoDB could not be connected: " + error);
     }
   );
 mongoose.set("useCreateIndex", true);

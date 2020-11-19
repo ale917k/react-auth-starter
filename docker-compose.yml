@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  # Node Server
+  auth-starter-server:
+    container_name: server
+    restart: unless-stopped
+    build: ./
+    command: npm run start:live
+    working_dir: /usr/src/auth-starter-server
+    env_file: .env
+    environment:
+      MONGO_URI: $MONGO_URI
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/usr/src/auth-starter-server
+    links:
+      - mongodb
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    command: mongod --config /etc/mongod.conf
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_INITDB_ROOT_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_INITDB_ROOT_PASSWORD
+      MONGO_INITDB_DATABASE: $MONGO_INITDB_DATABASE
+    ports:
+      - "27017-27019:27017-27019"
+    volumes:
+      - ./database/mongod.conf:/etc/mongod.conf
+      - ./database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./database/data/:/data/db
+      - ./database/:/var/log/mongodb/
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/authStarterDB --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 100s
