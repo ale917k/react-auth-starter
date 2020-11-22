@@ -43,11 +43,16 @@ export default function Header() {
             <Link to="/">Home</Link>
           </li>
           {state.user ? (
-            <li>
-              <Link to="/" onClick={logout}>
-                Logout
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/account">Account</Link>
+              </li>
+              <li>
+                <Link to="/" onClick={logout}>
+                  Logout
+                </Link>
+              </li>
+            </>
           ) : (
             <>
               <li>

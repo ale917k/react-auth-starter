@@ -34,6 +34,7 @@ export default function Login() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+    setAlertMessage(initialAlertMessage);
   };
 
   // Trigger POST request at /users/signin on form submission for logging user
@@ -47,13 +48,22 @@ export default function Login() {
     });
     try {
       const loggedUser = await data.json();
-      console.log(loggedUser);
+
       if (loggedUser.error) {
-        setAlertMessage({
-          isActive: true,
-          severity: "error",
-          message: "An error occurred, please try again later.",
-        });
+        if (loggedUser.error === "Unauthorized Access") {
+          setAlertMessage({
+            isActive: true,
+            severity: "error",
+            message:
+              "The details entered don't match any account. Please try again",
+          });
+        } else {
+          setAlertMessage({
+            isActive: true,
+            severity: "error",
+            message: "An error occurred, please try again later.",
+          });
+        }
       } else {
         dispatch({
           type: "SET_USER",

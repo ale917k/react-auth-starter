@@ -13,12 +13,18 @@ const Landing = lazy(() => import("../landing/Landing.page"));
 const Home = lazy(() => import("../home/Home.page"));
 const Register = lazy(() => import("../register/Register.page"));
 const Login = lazy(() => import("../login/Login.page"));
+const Account = lazy(() => import("../account/Account.page"));
 const PageNotFound = lazy(() => import("../page-not-found/PageNotFound.page"));
 
 // Lazy loaded App routes
 const routes = [
-  { path: "/register", name: "Register", Component: Register },
-  { path: "/login", name: "Login", Component: Login },
+  {
+    path: "/register",
+    Component: Register,
+    requireAuth: false,
+  },
+  { path: "/login", Component: Login, requireAuth: false },
+  { path: "/account", Component: Account, requireAuth: true },
 ];
 
 /**
@@ -41,15 +47,25 @@ export default function App() {
             </Suspense>
           </Route>
 
-          {routes.map(({ path, Component }) => (
+          {routes.map(({ path, Component, requireAuth }) => (
             <Route key={path} exact path={path}>
-              <Suspense fallback={<Spinner />}>
-                {(path === "/register" || path === "/login") && state.user ? (
-                  <Redirect to="/" />
-                ) : (
+              {path === "/register" || path === "/login" ? (
+                <>
+                  {state.user ? (
+                    <Redirect to="/" />
+                  ) : (
+                    <Suspense fallback={<Spinner />}>
+                      <Component />
+                    </Suspense>
+                  )}
+                </>
+              ) : requireAuth && !state.user ? (
+                <Redirect to="/login" />
+              ) : (
+                <Suspense fallback={<Spinner />}>
                   <Component />
-                )}
-              </Suspense>
+                </Suspense>
+              )}
             </Route>
           ))}
 

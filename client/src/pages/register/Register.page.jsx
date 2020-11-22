@@ -37,6 +37,7 @@ export default function Register() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+    setAlertMessage(initialAlertMessage);
   };
 
   // Trigger POST request at /users on form submission for creating new user
