@@ -107,7 +107,9 @@ router.post("/signin", (req, res) => {
 });
 
 router.get("/failedSignin", (req, res) => {
-  res.status(401).json("Unauthorized access");
+  res.status(500).json({
+    error: "Unauthorized Access",
+  });
 });
 
 router
@@ -129,25 +131,130 @@ router
       });
   })
   .patch((req, res) => {
-    User.updateOne(
-      { _id: req.params.userId },
-      {
-        ...req.body,
-      }
-    )
-      .then((result) => {
-        res.status(201).json({
-          message: "Updated User Successfully",
-          result: result,
+    // Set New Password
+    if (req.body.oldPassword) {
+      User.findOne({ _id: req.params.userId })
+        .then((user) => {
+          if (user) {
+            user.changePassword(
+              req.body.oldPassword,
+              req.body.newPassword,
+              (err) => {
+                if (err) {
+                  res.status(500).json({
+                    message:
+                      "Incorrect Old Password. Failed Setting New Password",
+                    error: err,
+                  });
+                } else {
+                  res.status(201).json({
+                    message: "Set New Password Successfully",
+                    result: {
+                      ...user._doc,
+                      hash: undefined,
+                      salt: undefined,
+                    },
+                  });
+                }
+              }
+            );
+          } else {
+            console.log(err);
+            res.status(500).json({
+              message: "This User does not exist. Failed Setting New Password",
+              error: err,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            message: "Failed Setting New Password",
+            error: err,
+          });
         });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          message: "Failed Updating User",
-          error: err,
+      // Reset Password
+    } else if (req.body.newPassword) {
+      User.findOne({ _id: req.params.userId })
+        .then((user) => {
+          if (user) {
+            user.setPassword(req.body.newPassword, (err) => {
+              if (err) {
+                res.status(500).json({
+                  message: "Failed Resetting Password",
+                  error: err,
+                });
+              } else {
+                user.save();
+                res.status(201).json({
+                  message: "Resetted Password Successfully",
+                  result: {
+                    ...user._doc,
+                    hash: undefined,
+                    salt: undefined,
+                  },
+                });
+              }
+            });
+          } else {
+            console.log(err);
+            res.status(500).json({
+              message: "This User does not exist. Failed Resetting Password",
+              error: err,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            message: "Failed Resetting Password",
+            error: err,
+          });
         });
-      });
+      // Update User information
+    } else {
+      User.updateOne(
+        { _id: req.params.userId },
+        {
+          ...req.body,
+        }
+      )
+        .then((result) => {
+          console.log(req.params.userId);
+          console.log(req.body);
+          res.status(201).json({
+            message: "Updated User Successfully",
+            result: result,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
+            message: "Failed Updating User",
+            error: err,
+          });
+        });
+    }
+
+    //     const user = new User({username: 'user'});
+    // await user.setPassword('password');
+    // await user.save();
+    //     const { user } = await User.authenticate()('user', 'password');
+
+    // req.changePassword(req.body.oldpassword, req.body.newpassword, function (
+    //   err
+    // ) {
+    //   if (err) {
+    //     console.log("ERROR", err);
+    //     res.status(500).json({ message: "error", err: err });
+    //   }
+    //   res.status(201).json({ message: "password reset successful" });
+    // });
+
+    // User.setPassword(req.body.password, function () {
+    //   User.save();
+    //   res.status(201).json({ message: "password reset successful" });
+    // });
   })
   .delete((req, res) => {
     User.deleteOne({ _id: req.params.userId })

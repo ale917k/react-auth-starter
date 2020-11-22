@@ -38,6 +38,7 @@ mongoose.set("useCreateIndex", true);
 
 // Passport Authentication
 let User = require("./models/User");
+// createStrategy is responsible to setup passport-local LocalStrategy with the correct options.
 passport.use(User.createStrategy());
 
 passport.serializeUser(User.serializeUser());
