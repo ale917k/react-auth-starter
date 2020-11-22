@@ -34,7 +34,7 @@ export default function Input(props) {
         minLength={props.type === "password" ? 8 : undefined}
       />
       <label>
-        {props.name}
+        {props.label}
         {props.required && " *"}
       </label>
     </div>

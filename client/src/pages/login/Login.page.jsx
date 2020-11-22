@@ -3,6 +3,9 @@ import { Store } from "../../context/Store";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
+import Alert from "../../components/global/alert/Alert.component";
+
+import { loginUser } from "../../api/users.api";
 
 import "../../styles/form.styles.scss";
 import "./Login.styles.scss";
@@ -41,44 +44,7 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = await fetch("http://localhost:5000/users/signin", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    try {
-      const loggedUser = await data.json();
-
-      if (loggedUser.error) {
-        if (loggedUser.error === "Unauthorized Access") {
-          setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message:
-              "The details entered don't match any account. Please try again",
-          });
-        } else {
-          setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message: "An error occurred, please try again later.",
-          });
-        }
-      } else {
-        dispatch({
-          type: "SET_USER",
-          payload: {
-            ...loggedUser.result,
-          },
-        });
-      }
-    } catch (err) {
-      setAlertMessage({
-        isActive: true,
-        severity: "error",
-        message: `An error occurred, please try again later. Ref: ${err}`,
-      });
-    }
+    loginUser(form, dispatch, setAlertMessage);
   };
 
   return (
@@ -88,23 +54,28 @@ export default function Login() {
           <h2>Login</h2>
 
           {alertMessage.isActive && (
-            <div className="alert error">{alertMessage.message}</div>
+            <Alert
+              severity={alertMessage.severity}
+              message={alertMessage.message}
+            />
           )}
 
           <form onSubmit={handleSubmit}>
             <Input
               type="text"
               name="username"
+              label="Username"
               value={form.username}
-              required
               onChange={handleChange}
+              required
             />
             <Input
               type="password"
               name="password"
+              label="Password"
               value={form.password}
-              required
               onChange={handleChange}
+              required
             />
             <button type="submit" className="primary-button">
               Login

@@ -1,0 +1,35 @@
+.alert {
+  position: relative;
+  border-radius: 5px;
+  max-width: 300px;
+  margin: 0 auto 2rem;
+  padding: 1rem 2rem 1rem 3rem;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: 1rem center;
+  background-size: 20px;
+
+  &.info {
+    background-color: #e8f4fd;
+    background-image: url(../../../assets/alert/info.svg);
+    color: #0d3c61;
+  }
+
+  &.success {
+    background-color: #edf7ed;
+    background-image: url(../../../assets/alert/success.svg);
+    color: #1e4620;
+  }
+
+  &.warning {
+    background-color: #fff4e5;
+    background-image: url(../../../assets/alert/warning.svg);
+    color: #663c00;
+  }
+
+  &.error {
+    background-color: #fdecea;
+    background-image: url(../../../assets/alert/error.svg);
+    color: #611a15;
+  }
+}

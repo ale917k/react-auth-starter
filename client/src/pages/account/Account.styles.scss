@@ -1,5 +1,12 @@
 .account {
   .account-container {
+    flex-direction: column;
     justify-content: center;
+
+    .card-wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+    }
   }
 }

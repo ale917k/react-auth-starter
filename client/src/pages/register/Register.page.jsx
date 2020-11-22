@@ -4,7 +4,10 @@ import { Store } from "../../context/Store";
 
 import Container from "../../components/global/container/Container.component";
 import Input from "../../components/global/input/Input.component";
+import Alert from "../../components/global/alert/Alert.component";
 import ContactEmail from "../../components/email/registration-confirmation/RegistrationConfirmation.email";
+
+import { addNewUser } from "../../api/users.api";
 
 import "../../styles/form.styles.scss";
 import "./Register.styles.scss";
@@ -46,45 +49,7 @@ export default function Register() {
 
     const messageHtml = renderEmail(<ContactEmail {...form} />);
 
-    const data = await fetch("http://localhost:5000/users", {
-      method: "post",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        messageHtml,
-      }),
-    });
-    try {
-      const signedUser = await data.json();
-      if (signedUser.error) {
-        if (signedUser.error.name === "UserExistsError") {
-          setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message: "An user with the following credentials already exists.",
-          });
-        } else {
-          setAlertMessage({
-            isActive: true,
-            severity: "error",
-            message: "An error occurred, please try again later.",
-          });
-        }
-      } else {
-        dispatch({
-          type: "SET_USER",
-          payload: {
-            ...signedUser.result,
-          },
-        });
-      }
-    } catch (err) {
-      setAlertMessage({
-        isActive: true,
-        severity: "error",
-        message: `An error occurred, please try again later. Ref: ${err}`,
-      });
-    }
+    addNewUser({ ...form, messageHtml }, dispatch, setAlertMessage);
   };
 
   return (
@@ -94,30 +59,36 @@ export default function Register() {
           <h2>Register</h2>
 
           {alertMessage.isActive && (
-            <div className="alert error">{alertMessage.message}</div>
+            <Alert
+              severity={alertMessage.severity}
+              message={alertMessage.message}
+            />
           )}
 
           <form onSubmit={handleSubmit}>
             <Input
               type="email"
               name="email"
+              label="Email"
               value={form.email}
-              required
               onChange={handleChange}
+              required
             />
             <Input
               type="text"
               name="username"
+              label="Username"
               value={form.username}
-              required
               onChange={handleChange}
+              required
             />
             <Input
               type="password"
               name="password"
+              label="Password"
               value={form.password}
-              required
               onChange={handleChange}
+              required
             />
             <button type="submit" className="primary-button">
               Create new account
