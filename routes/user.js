@@ -219,9 +219,7 @@ router
           ...req.body,
         }
       )
-        .then((result) => {
-          console.log(req.params.userId);
-          console.log(req.body);
+        .then((result, test) => {
           res.status(201).json({
             message: "Updated User Successfully",
             result: result,

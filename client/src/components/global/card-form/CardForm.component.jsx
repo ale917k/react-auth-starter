@@ -1,25 +1,23 @@
 import React, { useState, useContext } from "react";
+import { renderEmail } from "react-html-email";
 
 import Input from "../input/Input.component";
 import Alert from "../alert/Alert.component";
+import ContactEmail from "../../email/registration-confirmation/RegistrationConfirmation.email";
 
 import { Store } from "../../../context/Store";
 
-import {
-  addNewUser,
-  loginUser,
-  editUser,
-  deleteUser,
-} from "../../../api/users.api";
+import { addNewUser, loginUser, editUser } from "../../../api/users.api";
 
 import "./CardForm.styles.scss";
 
 /**
  * CardForm component used to handle any CRUD method through form and Hooks.
  * @param {string} title - Title to display on top of the form.
- * @param {string} initialForm - Initial shape of the form data.
- * @param {string} inputList - List of inputs and related attributes to display on the form.
+ * @param {Object} initialForm - Initial shape of the form data.
+ * @param {array} inputList - List of inputs and related attributes to display on the form.
  * @param {string} requestType - Type of CRUD request to apply.
+ * @param {string} buttonText - Text to display on submit button.
  * @return {JSX} - Generic form to apply CRUD methods to server.
  */
 export default function CardForm({
@@ -27,6 +25,7 @@ export default function CardForm({
   initialForm,
   inputList,
   requestType,
+  buttonText,
 }) {
   // Context for retrieving and dispatching User state from and to Store
   const { state, dispatch } = useContext(Store);
@@ -46,6 +45,7 @@ export default function CardForm({
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+    setAlertMessage(initialAlertMessage);
   };
 
   // Trigger CRUD request to server
@@ -59,8 +59,12 @@ export default function CardForm({
     );
 
     switch (requestType) {
-      case "addUser":
-        // addNewUser(state.user, filteredForm, dispatch, setAlertMessage);
+      case "addNewUser":
+        const messageHtml = renderEmail(<ContactEmail {...form} />);
+        addNewUser({ ...form, messageHtml }, dispatch, setAlertMessage);
+        break;
+      case "loginUser":
+        loginUser(form, dispatch, setAlertMessage);
         break;
       case "editUser":
         editUser(state.user, filteredForm, dispatch, setAlertMessage);
@@ -94,7 +98,7 @@ export default function CardForm({
           />
         ))}
         <button type="submit" className="primary-button">
-          Update
+          {buttonText}
         </button>
       </form>
     </div>

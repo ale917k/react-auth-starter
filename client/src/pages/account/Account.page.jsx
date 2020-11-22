@@ -59,7 +59,8 @@ export default function Account() {
               username: state.user.username,
             }}
             inputList={editDetailsForm}
-            requestType={"editUser"}
+            requestType="editUser"
+            buttonText="Update"
           />
 
           <CardForm
@@ -69,7 +70,8 @@ export default function Account() {
               newPassword: "",
             }}
             inputList={editPasswordForm}
-            requestType={"editUser"}
+            requestType="editUser"
+            buttonText="Update"
           />
         </div>
       </Container>
