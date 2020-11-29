@@ -184,14 +184,16 @@ Ok, so given the code, let's start off saying the signinAuthentication is the fu
 router.post("/signin", signin.signinAuthentication(User, passport));
 ```
 
-The handleSignin function works perfectly fine, it returns a result with such shape:
+The handleSignin function works perfectly fine, and it returns a result with such shape:
 ```
 {
-    success: 'Signed in User Successfully',
+    message: 'Signed in User Successfully',
     result: {
         _id: 5fbeaebd4f0aa5ba09c691a2,
         email: 'test@gmail.com',
         username: 'test',
+        salt: undefined,
+        hash: undefined,
         createdAt: 2020-01-01T00:00:00.174Z,
         updatedAt: 2020-01-01T00:00:00.174Z
     }
