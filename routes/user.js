@@ -1,16 +1,19 @@
-let express = require("express"),
+const express = require("express"),
   passport = require("passport"),
   nodemailer = require("nodemailer"),
   router = express.Router();
 
 // User model
-let User = require("../models/User");
+const User = require("../models/User");
+
+// User controllers
+const signin = require("../controllers/signin");
 
 router.use(passport.initialize());
 router.use(passport.session());
 
 // Set up transport protocols and authentication
-var transport = nodemailer.createTransport({
+const transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
@@ -81,30 +84,7 @@ router
   });
 
 // Requests targetting a specific User
-router.post("/signin", (req, res) => {
-  const user = new User({
-    username: req.body.username,
-  });
-
-  req.login(user, (err, result) => {
-    if (!err) {
-      passport.authenticate("local", {
-        failureRedirect: "/users/failedSignin",
-      })(req, res, () => {
-        res.status(201).json({
-          message: "Signed in User Successfully",
-          result: { ...req.user._doc, hash: undefined, salt: undefined },
-        });
-      });
-    } else {
-      console.log(err);
-      res.status(500).json({
-        message: "Failed Signin in User",
-        error: err,
-      });
-    }
-  });
-});
+router.post("/signin", signin.signinAuthentication(User, passport));
 
 router.get("/failedSignin", (req, res) => {
   res.status(500).json({
@@ -233,26 +213,6 @@ router
           });
         });
     }
-
-    //     const user = new User({username: 'user'});
-    // await user.setPassword('password');
-    // await user.save();
-    //     const { user } = await User.authenticate()('user', 'password');
-
-    // req.changePassword(req.body.oldpassword, req.body.newpassword, function (
-    //   err
-    // ) {
-    //   if (err) {
-    //     console.log("ERROR", err);
-    //     res.status(500).json({ message: "error", err: err });
-    //   }
-    //   res.status(201).json({ message: "password reset successful" });
-    // });
-
-    // User.setPassword(req.body.password, function () {
-    //   User.save();
-    //   res.status(201).json({ message: "password reset successful" });
-    // });
   })
   .delete((req, res) => {
     User.deleteOne({ _id: req.params.userId })
