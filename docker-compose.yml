@@ -11,20 +11,22 @@ services:
     env_file: .env
     environment:
       MONGO_URI: $MONGO_URI
+      REDIS_URI: $REDIS_URI
     ports:
       - "5000:5000"
     volumes:
       - ./:/usr/src/auth-starter-server
     links:
       - mongodb
+      - redis
     depends_on:
       mongodb:
         condition: service_healthy
 
   # MongoDB
   mongodb:
-    image: mongo:latest
     container_name: mongodb
+    image: mongo:latest
     restart: unless-stopped
     command: mongod --config /etc/mongod.conf
     env_file: .env
@@ -45,3 +47,10 @@ services:
       timeout: 10s
       retries: 5
       start_period: 100s
+
+  #Redis
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
