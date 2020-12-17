@@ -1,5 +1,6 @@
-import React, { useContext, lazy, Suspense } from "react";
+import React, { useContext, lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { loginUserWithToken, retrieveUser } from "../../api/users.api";
 import { Store } from "../../context/Store";
 
 import Header from "../../components/global/header/Header.component";
@@ -16,7 +17,7 @@ const Login = lazy(() => import("../login/Login.page"));
 const Account = lazy(() => import("../account/Account.page"));
 const PageNotFound = lazy(() => import("../page-not-found/PageNotFound.page"));
 
-// Lazy loaded App routes
+// Lazy loaded routes
 const routes = [
   {
     path: "/register",
@@ -33,7 +34,19 @@ const routes = [
  */
 export default function App() {
   // Context for retrieving User state from Store
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
+
+  useEffect(() => {
+    // Check if any localStorage token already exist
+    const token = window.localStorage.getItem("token");
+
+    token &&
+      loginUserWithToken(token)
+        .then((userId) =>
+          userId ? retrieveUser(userId, dispatch) : Promise.reject(userId)
+        )
+        .catch((err) => console.log(err));
+  }, [dispatch]);
 
   return (
     <div className="App">
