@@ -56,8 +56,7 @@
     padding: 0.5rem;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color var(--transition-timing)
-      var(--transition-animation);
+    transition: background-color var(--transition-timing) var(--transition-animation);
     z-index: 1;
 
     &:hover {
@@ -66,6 +65,12 @@
 
     .svg {
       width: 200px;
+    }
+
+    // Text for accessibility used from screen readers
+    span {
+      position: absolute;
+      opacity: 0;
     }
   }
 
@@ -86,8 +91,7 @@
         font-weight: 600;
         padding: 1rem 2rem;
         border-radius: 5px;
-        transition: background-color var(--transition-timing)
-          var(--transition-animation);
+        transition: background-color var(--transition-timing) var(--transition-animation);
 
         &:hover {
           background-color: var(--color-white-alt);

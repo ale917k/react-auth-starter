@@ -36,6 +36,7 @@ export default function Header() {
       <Container>
         <Link className="logo" to="/">
           <LogoSvg className="svg" />
+          <span>Logo</span>
         </Link>
 
         <ul className="menu">
