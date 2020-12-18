@@ -150,7 +150,10 @@ export const addNewUser = async (newData, setData, setAlertMessage) => {
         type: "SET_USER",
         payload: newUser.result,
       });
-    } else if (newUser.error.name === "UserExistsError") {
+    } else if (
+      newUser.error.name === "UserExistsError" ||
+      (newUser.error.name === "MongoError" && newUser.error.keyPattern)
+    ) {
       setAlertMessage({
         isActive: true,
         severity: "error",
