@@ -108,8 +108,7 @@ export const loginUser = async (authData, setData, setAlertMessage) => {
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message:
-          "The details entered don't match any account. Please try again",
+        message: "The details entered don't match any account. Please try again",
       });
     } else {
       setAlertMessage({

@@ -1,7 +1,7 @@
 import React, { useContext, lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { loginUserWithToken, retrieveUser } from "../../api/users.api";
-import { Store } from "../../context/Store";
+import { AppContext } from "../../context/context";
 
 import Header from "../../components/global/header/Header.component";
 import Footer from "../../components/global/footer/Footer.component";
@@ -33,8 +33,8 @@ const routes = [
  * @return {JSX} - Header, Footer and main content of the App.
  */
 export default function App() {
-  // Context for retrieving User state from Store
-  const { state, dispatch } = useContext(Store);
+  // Context for retrieving User state from AppContext
+  const { state, dispatch } = useContext(AppContext);
 
   useEffect(() => {
     // Check if any localStorage token already exist
@@ -42,9 +42,7 @@ export default function App() {
 
     token &&
       loginUserWithToken(token)
-        .then((userId) =>
-          userId ? retrieveUser(userId, dispatch) : Promise.reject(userId)
-        )
+        .then((userId) => (userId ? retrieveUser(userId, dispatch) : Promise.reject(userId)))
         .catch((err) => console.log(err));
   }, [dispatch]);
 
@@ -55,9 +53,7 @@ export default function App() {
       <main className="main">
         <Switch>
           <Route exact path="/">
-            <Suspense fallback={<Spinner />}>
-              {state.user ? <Home /> : <Landing />}
-            </Suspense>
+            <Suspense fallback={<Spinner />}>{state.user ? <Home /> : <Landing />}</Suspense>
           </Route>
 
           {routes.map(({ path, Component, requireAuth }) => (

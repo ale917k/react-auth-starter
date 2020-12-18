@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Store } from "../../../context/Store";
+import { AppContext } from "../../../context/context";
 
 import Container from "../container/Container.component";
 
@@ -12,8 +12,8 @@ import { ReactComponent as LogoSvg } from "../../../assets/logo.svg";
  * @return {JSX} - Logo and Menu elements.
  */
 export default function Header() {
-  // Context for retrieving User state from Store and dispatching updates if User logs out
-  const { state, dispatch } = useContext(Store);
+  // Context for retrieving User state from AppContext and dispatching updates if User logs out
+  const { state, dispatch } = useContext(AppContext);
 
   // Used for toggling mobile menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);

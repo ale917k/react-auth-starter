@@ -5,7 +5,7 @@ import Input from "../input/Input.component";
 import Alert from "../alert/Alert.component";
 import ContactEmail from "../../email/registration-confirmation/RegistrationConfirmation.email";
 
-import { Store } from "../../../context/Store";
+import { AppContext } from "../../../context/context";
 
 import { addNewUser, loginUser, editUser } from "../../../api/users.api";
 
@@ -20,15 +20,9 @@ import "./CardForm.styles.scss";
  * @param {string} buttonText - Text to display on submit button.
  * @return {JSX} - Generic form to apply CRUD methods to server.
  */
-export default function CardForm({
-  title,
-  initialForm,
-  inputList,
-  requestType,
-  buttonText,
-}) {
-  // Context for retrieving and dispatching User state from and to Store
-  const { state, dispatch } = useContext(Store);
+export default function CardForm({ title, initialForm, inputList, requestType, buttonText }) {
+  // Context for retrieving and dispatching User state from and to AppContext
+  const { state, dispatch } = useContext(AppContext);
 
   // Data to send to server for applying CRUD methods
   const [form, setForm] = useState(initialForm);
@@ -54,9 +48,7 @@ export default function CardForm({
 
     // Create temp form obj and remove empty fields
     const filteredForm = form;
-    Object.keys(filteredForm).forEach(
-      (key) => filteredForm[key] === "" && delete filteredForm[key]
-    );
+    Object.keys(filteredForm).forEach((key) => filteredForm[key] === "" && delete filteredForm[key]);
 
     switch (requestType) {
       case "addNewUser":
@@ -78,12 +70,7 @@ export default function CardForm({
     <div className="card">
       <h2>{title}</h2>
 
-      {alertMessage.isActive && (
-        <Alert
-          severity={alertMessage.severity}
-          message={alertMessage.message}
-        />
-      )}
+      {alertMessage.isActive && <Alert severity={alertMessage.severity} message={alertMessage.message} />}
 
       <form onSubmit={handleSubmit}>
         {inputList.map(({ type, name, label, required }, index) => (

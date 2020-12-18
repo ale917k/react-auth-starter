@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Store } from "../../context/Store";
+import { AppContext } from "../../context/context";
 
 import Container from "../../components/global/container/Container.component";
 import CardForm from "../../components/global/card-form/CardForm.component";
@@ -11,8 +11,8 @@ import "./Account.styles.scss";
  * @return {JSX} - Account page containing forms for updating User information and password.
  */
 export default function Account() {
-  // Context for retrieving User state from Store
-  const { state } = useContext(Store);
+  // Context for retrieving User state from AppContext
+  const { state } = useContext(AppContext);
 
   // Form for editing User information
   const editDetailsForm = [

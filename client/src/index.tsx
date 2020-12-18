@@ -4,25 +4,26 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./pages/app/App";
 
-import { StoreProvider } from "./context/Store";
+import { AppProvider } from "./context/context";
 
 import "./styles/index.styles.scss";
 
-import * as serviceWorker from "./serviceWorker";
+import register from "./serviceWorker";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <StoreProvider>
+    <AppProvider>
       <BrowserRouter basename="/">
         <App />
       </BrowserRouter>
-    </StoreProvider>
+    </AppProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("root"),
 );
 
-serviceWorker.register();
+// Register service worker
+register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
