@@ -77,34 +77,31 @@ export const loginUserWithToken = async (token) => {
       "Authorization": token, // prettier-ignore
     },
   });
-  const loggedUser = await data.json();
-  if (!loggedUser.error && loggedUser.id) {
-    return loggedUser.id;
+  const authenticateUser = await data.json();
+  if (!authenticateUser.error && authenticateUser.id) {
+    return authenticateUser.id;
   }
 };
 
 /**
- * Login specific User.
+ * Authenticate User logging in.
  * @param {Object} authData - Object containing the User info for login authentication.
  * @param {function} setData - Context Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const loginUser = async (authData, setData, setAlertMessage) => {
+export const authenticateUser = async (authData, setData, setAlertMessage) => {
   const data = await fetch("http://localhost:5000/users/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(authData),
   });
   try {
-    const loggedUser = await data.json();
-    if (!loggedUser.error) {
-      setData({
-        type: "SET_USER",
-        payload: loggedUser.result,
-      });
+    const authenticatedUser = await data.json();
+    if (!authenticatedUser.error) {
+      retrieveUser(authenticatedUser.userId, setData, setAlertMessage);
       // Set localStorage token
-      window.localStorage.setItem("token", loggedUser.token);
-    } else if (loggedUser.error === "Unauthorized Access") {
+      window.localStorage.setItem("token", authenticatedUser.token);
+    } else if (authenticatedUser.error === "Unauthorized Access") {
       setAlertMessage({
         isActive: true,
         severity: "error",
@@ -114,7 +111,7 @@ export const loginUser = async (authData, setData, setAlertMessage) => {
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: `An error occurred, please try again later. Ref: ${loggedUser.message}: ${loggedUser.error}`,
+        message: `An error occurred, please try again later. Ref: ${authenticatedUser.message}: ${authenticatedUser.error}`,
       });
     }
   } catch (err) {

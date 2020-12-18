@@ -6,6 +6,7 @@ import Container from "../container/Container.component";
 
 import "./Header.styles.scss";
 import { ReactComponent as LogoSvg } from "../../../assets/logo.svg";
+import UserTypes from "../../../context/user/types";
 
 /**
  * Main App's Header.
@@ -26,9 +27,11 @@ export default function Header() {
   // Logout User from App
   const logout = () => {
     dispatch({
-      type: "SET_USER",
-      payload: null,
+      type: UserTypes.Clear,
     });
+
+    // Remove session token
+    window.localStorage.removeItem("token");
   };
 
   return (

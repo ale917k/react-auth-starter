@@ -7,7 +7,7 @@ import ContactEmail from "../../email/registration-confirmation/RegistrationConf
 
 import { AppContext } from "../../../context/context";
 
-import { addNewUser, loginUser, editUser } from "../../../api/users.api";
+import { addNewUser, authenticateUser, editUser } from "../../../api/users.api";
 
 import "./CardForm.styles.scss";
 
@@ -56,7 +56,7 @@ export default function CardForm({ title, initialForm, inputList, requestType, b
         addNewUser({ ...form, messageHtml }, dispatch, setAlertMessage);
         break;
       case "loginUser":
-        loginUser(form, dispatch, setAlertMessage);
+        authenticateUser(form, dispatch, setAlertMessage);
         break;
       case "editUser":
         editUser(state.user, filteredForm, dispatch, setAlertMessage);
