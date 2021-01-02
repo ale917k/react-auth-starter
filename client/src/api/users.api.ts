@@ -3,8 +3,12 @@
  * @param {function} setData - Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const retrieveUsers = async (setData, setAlertMessage) => {
-  const data = await fetch("http://localhost:5000/users", {
+
+export const retrieveUsers = async (
+  setData: (user: UserType) => void,
+  setAlertMessage: (alertMessage: AlertMessageType) => void,
+): Promise<void> => {
+  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users`, {
     method: "get",
     headers: { "Content-Type": "application/json" },
   });
@@ -33,8 +37,12 @@ export const retrieveUsers = async (setData, setAlertMessage) => {
  * @param {function} setData - Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const retrieveUser = async (userId, setData, setAlertMessage) => {
-  const data = await fetch(`http://localhost:5000/users/${userId}`, {
+export const retrieveUser = async (
+  userId: string,
+  setData: (dispatch: UserDispatchType) => void,
+  setAlertMessage: (alertMessage: AlertMessageType) => void,
+): Promise<void> => {
+  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${userId}`, {
     method: "get",
     headers: { "Content-Type": "application/json" },
   });
@@ -69,18 +77,21 @@ export const retrieveUser = async (userId, setData, setAlertMessage) => {
  * @param {function} setData - Context Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const loginUserWithToken = async (token) => {
-  const data = await fetch("http://localhost:5000/users/signin", {
+export const loginUserWithToken = async (token: string): Promise<string> => {
+  console.log("token", token);
+  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
     method: "post",
     headers: {
       "Content-Type": "application/json",
       "Authorization": token, // prettier-ignore
     },
   });
-  const authenticateUser = await data.json();
-  if (!authenticateUser.error && authenticateUser.id) {
-    return authenticateUser.id;
+  const authenticatedUser = await data.json();
+  if (!authenticatedUser.error && authenticatedUser.id) {
+    console.log("authenticatedUser", typeof authenticatedUser.id);
+    return authenticatedUser.id;
   }
+  return "";
 };
 
 /**
@@ -89,8 +100,12 @@ export const loginUserWithToken = async (token) => {
  * @param {function} setData - Context Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const authenticateUser = async (authData, setData, setAlertMessage) => {
-  const data = await fetch("http://localhost:5000/users/signin", {
+export const authenticateUser = async (
+  authData: LogUserFormType,
+  setData: (dispatch: UserDispatchType) => void,
+  setAlertMessage: (alertMessage: AlertMessageType) => void,
+): Promise<void> => {
+  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(authData),
@@ -129,8 +144,12 @@ export const authenticateUser = async (authData, setData, setAlertMessage) => {
  * @param {function} setData - Context Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const addNewUser = async (newData, setData, setAlertMessage) => {
-  const data = await fetch("http://localhost:5000/users", {
+export const addNewUser = async (
+  newData: RegUserFormType,
+  setData: (dispatch: UserDispatchType) => void,
+  setAlertMessage: (alertMessage: AlertMessageType) => void,
+): Promise<void> => {
+  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users`, {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -179,92 +198,59 @@ export const addNewUser = async (newData, setData, setAlertMessage) => {
  * @param {function} setData - Context Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-export const editUser = async (oldData, newData, setData, setAlertMessage) => {
-  const data = await fetch(`http://localhost:5000/users/${oldData._id}`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newData),
-  });
-  try {
-    const editedUser = await data.json();
-    if (!editedUser.error) {
-      setAlertMessage({
-        isActive: true,
-        severity: "success",
-        message: "Successfully updated details.",
-      });
-      setData({
-        type: "SET_USER",
-        payload: {
-          ...oldData,
-          ...newData,
-        },
-      });
-      setTimeout(() => {
+export const editUser = async (
+  oldData: UserType,
+  newData: EditUserFormType,
+  setData: (dispatch: UserDispatchType) => void,
+  setAlertMessage: (alertMessage: AlertMessageType) => void,
+): Promise<void> => {
+  if (oldData) {
+    const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${oldData._id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newData),
+    });
+    try {
+      const editedUser = await data.json();
+      if (!editedUser.error) {
         setAlertMessage({
-          isActive: false,
-          severity: "",
-          message: "",
+          isActive: true,
+          severity: "success",
+          message: "Successfully updated details.",
         });
-      }, 5000);
-    } else if (editedUser.error.name === "IncorrectPasswordError") {
+        setData({
+          type: "SET_USER",
+          payload: {
+            ...oldData,
+            ...newData,
+          },
+        });
+        setTimeout(() => {
+          setAlertMessage({
+            isActive: false,
+            severity: "",
+            message: "",
+          });
+        }, 5000);
+      } else if (editedUser.error.name === "IncorrectPasswordError") {
+        setAlertMessage({
+          isActive: true,
+          severity: "error",
+          message: "Sorry, your old password is incorrect, please try again.",
+        });
+      } else {
+        setAlertMessage({
+          isActive: true,
+          severity: "error",
+          message: `An error occurred, please try again later. Ref: ${editedUser.message}: ${editedUser.error}`,
+        });
+      }
+    } catch (err) {
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: "Sorry, your old password is incorrect, please try again.",
-      });
-    } else {
-      setAlertMessage({
-        isActive: true,
-        severity: "error",
-        message: `An error occurred, please try again later. Ref: ${editedUser.message}: ${editedUser.error}`,
+        message: `An error occurred, please try again later. Ref: ${err}`,
       });
     }
-  } catch (err) {
-    setAlertMessage({
-      isActive: true,
-      severity: "error",
-      message: `An error occurred, please try again later. Ref: ${err}`,
-    });
-  }
-};
-
-/**
- * Remove User entry.
- * @param {Object} oldData - Object containing the old User which needs to be removed.
- * @param {function} setData - Hook function for updating the state of the User data.
- * @param {function} setAlertMessage - Hook state for displaying error / success messages.
- */
-export const removeUser = async (oldData, setData, setAlertMessage) => {
-  const data = await fetch(`http://localhost:5000/users/${oldData._id}`, {
-    method: "delete",
-    headers: { "Content-Type": "application/json" },
-  });
-  try {
-    const deletedUser = await data.json();
-    if (!deletedUser.error) {
-      setAlertMessage({
-        isActive: true,
-        severity: "success",
-        message: "Utente eliminato con successo.",
-      });
-      setData((prevState) => {
-        const data = [...prevState];
-        data.splice(data.indexOf(oldData), 1);
-        return data;
-      });
-    } else {
-      setAlertMessage({
-        isActive: true,
-        severity: "error",
-        message: `Error removing user. Error Reference: ${deletedUser.message}: ${deletedUser.error}`,
-      });
-    }
-  } catch (err) {
-    setAlertMessage({
-      isActive: true,
-      severity: "error",
-      message: `Error removing user. Error Reference: ${err}`,
-    });
   }
 };

@@ -23,3 +23,39 @@ type UserType = {
 type InitialStateType = {
   user: UserType;
 };
+
+// Alert Messages
+type AlertMessageType = {
+  isActive: boolean;
+  severity: string;
+  message: string;
+};
+
+// Dispatch actions for UserType
+type UserDispatchType = {
+  type: string;
+  payload: UserType;
+};
+
+// Log User form
+type LogUserFormType = {
+  email: string;
+  username: string;
+  password: string;
+};
+
+// Register User form
+type RegUserFormType = {
+  email: string;
+  username: string;
+  password: string;
+  messageHtml: (ContactEmail: React.ReactNode) => void;
+};
+
+// Edit User form
+type EditUserFormType = {
+  email?: string;
+  username?: string;
+  oldPassword?: string;
+  newPassword?: string;
+};
