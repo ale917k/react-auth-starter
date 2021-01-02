@@ -1,14 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Email, Item } from "react-html-email";
+
+interface IProps {
+  email: string;
+  username: string;
+}
 
 /**
  * Registration Confirmation email sent once a new User registers.
  * @param {string} email - Email used by the user during registration.
  * @param {string} username - Username used by the user during registration.
- * @return {JSX} - Registration Confirmation email template.
+ * @return {ReactNode} - Registration Confirmation email template.
  */
-const RegistrationConfirmation: React.FC = ({ email, username }) => {
+const RegistrationConfirmation = ({ email, username }: IProps): React.ReactNode => {
   return (
     <Email title="Portfolio Email!">
       <Item>Thank you for registering a new account with us. You can review your information below:</Item>
@@ -16,11 +20,6 @@ const RegistrationConfirmation: React.FC = ({ email, username }) => {
       <Item>Username: {username}</Item>
     </Email>
   );
-};
-
-RegistrationConfirmation.propTypes = {
-  email: PropTypes.string,
-  username: PropTypes.string,
 };
 
 export default RegistrationConfirmation;

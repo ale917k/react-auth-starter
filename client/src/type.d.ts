@@ -1,3 +1,5 @@
+declare module "react-html-email";
+
 // Context Actions
 type ActionMap<M extends { [index: string]: Record<string, unknown> | null }> = {
   [Key in keyof M]: M[Key] extends undefined
