@@ -1,18 +1,16 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../../context/context";
-
 import Container from "../container/Container.component";
-
 import "./Header.styles.scss";
 import { ReactComponent as LogoSvg } from "../../../assets/logo.svg";
 import UserTypes from "../../../context/user/types";
 
 /**
  * Main App's Header.
- * @return {JSX} - Logo and Menu elements.
+ * @return - Logo and Menu elements.
  */
-const Header = () => {
+const Header: React.FC = () => {
   // Context for retrieving User state from AppContext and dispatching updates if User logs out
   const { state, dispatch } = useContext(AppContext);
 
@@ -28,6 +26,7 @@ const Header = () => {
   const logout = () => {
     dispatch({
       type: UserTypes.Clear,
+      payload: null,
     });
 
     // Remove session token

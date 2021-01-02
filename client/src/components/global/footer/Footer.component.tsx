@@ -1,7 +1,5 @@
 import React from "react";
-
 import Container from "../container/Container.component";
-
 import "./Footer.styles.scss";
 
 /**
