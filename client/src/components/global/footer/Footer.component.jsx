@@ -8,7 +8,7 @@ import "./Footer.styles.scss";
  * Main App's Footer.
  * @return {JSX} - Copyright infos.
  */
-export default function Footer() {
+const Footer = () => {
   // Dynamic value retrieved from current year for up-to-date copyright date
   const year = new Date().getFullYear();
 
@@ -20,16 +20,13 @@ export default function Footer() {
         </div>
         <div className="created-by">
           Design and Development:{" "}
-          <a
-            href="https://www.alessiopetrin.com"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="link"
-          >
+          <a href="https://www.alessiopetrin.com" rel="noopener noreferrer" target="_blank" className="link">
             AP
           </a>
         </div>
       </Container>
     </footer>
   );
-}
+};
+
+export default Footer;

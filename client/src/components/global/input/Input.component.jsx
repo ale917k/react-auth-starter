@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "./Input.styles.scss";
 
@@ -7,7 +8,7 @@ import "./Input.styles.scss";
  * @param {Object} props - Props passed from parent component containing input attributes.
  * @return {JSX} - Controlled input element.
  */
-export default function Input(props) {
+const Input = (props) => {
   // Check if value entered is a valid email. Ref: http://emailregex.com/
   let emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
 
@@ -15,10 +16,7 @@ export default function Input(props) {
   const handleChange = (event) => {
     props.onChange(event);
 
-    if (
-      event.target.type === "email" &&
-      !emailPattern.test(event.target.value)
-    ) {
+    if (event.target.type === "email" && !emailPattern.test(event.target.value)) {
       event.target.setCustomValidity("Please select a valid email address.");
     } else {
       event.target.setCustomValidity("");
@@ -27,16 +25,20 @@ export default function Input(props) {
 
   return (
     <div className="input">
-      <input
-        placeholder=" "
-        {...props}
-        onChange={handleChange}
-        minLength={props.type === "password" ? 8 : undefined}
-      />
+      <input placeholder=" " {...props} onChange={handleChange} minLength={props.type === "password" ? 8 : undefined} />
       <label>
         {props.label}
         {props.required && " *"}
       </label>
     </div>
   );
-}
+};
+
+Input.propTypes = {
+  onChange: PropTypes.func,
+  type: PropTypes.string,
+  label: PropTypes.string,
+  required: PropTypes.bool,
+};
+
+export default Input;

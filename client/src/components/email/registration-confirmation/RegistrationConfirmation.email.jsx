@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Email, Item } from "react-html-email";
 
 /**
@@ -7,15 +8,19 @@ import { Email, Item } from "react-html-email";
  * @param {string} username - Username used by the user during registration.
  * @return {JSX} - Registration Confirmation email template.
  */
-export default function RegistrationConfirmation({ email, username }) {
+const RegistrationConfirmation: React.FC = ({ email, username }) => {
   return (
     <Email title="Portfolio Email!">
-      <Item>
-        Thank you for registering a new account with us. You can review your
-        information below:
-      </Item>
+      <Item>Thank you for registering a new account with us. You can review your information below:</Item>
       <Item>Email: {email}</Item>
       <Item>Username: {username}</Item>
     </Email>
   );
-}
+};
+
+RegistrationConfirmation.propTypes = {
+  email: PropTypes.string,
+  username: PropTypes.string,
+};
+
+export default RegistrationConfirmation;

@@ -32,7 +32,7 @@ const routes = [
  * Main App component containing Header, Footer and lazy loaded routing.
  * @return {JSX} - Header, Footer and main content of the App.
  */
-export default function App() {
+export default function App(): React.FC {
   // Context for retrieving User state from AppContext
   const { state, dispatch } = useContext(AppContext);
 

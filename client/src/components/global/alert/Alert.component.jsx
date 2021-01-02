@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "./Alert.styles.scss";
 
@@ -8,6 +9,13 @@ import "./Alert.styles.scss";
  * @param {string} message - Alert message to display.
  * @return {JSX} - Alert message with appropriate styles.
  */
-export default function Alert({ severity, message }) {
+const Alert = ({ severity, message }) => {
   return <div className={`alert ${severity}`}>{message}</div>;
-}
+};
+
+Alert.propTypes = {
+  severity: PropTypes.string,
+  message: PropTypes.string,
+};
+
+export default Alert;

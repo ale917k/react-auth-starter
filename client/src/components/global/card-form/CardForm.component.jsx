@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 import { renderEmail } from "react-html-email";
 
 import Input from "../input/Input.component";
@@ -20,7 +21,7 @@ import "./CardForm.styles.scss";
  * @param {string} buttonText - Text to display on submit button.
  * @return {JSX} - Generic form to apply CRUD methods to server.
  */
-export default function CardForm({ title, initialForm, inputList, requestType, buttonText }) {
+const CardForm = ({ title, initialForm, inputList, requestType, buttonText }) => {
   // Context for retrieving and dispatching User state from and to AppContext
   const { state, dispatch } = useContext(AppContext);
 
@@ -90,4 +91,14 @@ export default function CardForm({ title, initialForm, inputList, requestType, b
       </form>
     </div>
   );
-}
+};
+
+CardForm.propTypes = {
+  title: PropTypes.string,
+  initialForm: PropTypes.obj,
+  inputList: PropTypes.array,
+  requestType: PropTypes.string,
+  buttonText: PropTypes.string,
+};
+
+export default CardForm;

@@ -12,7 +12,7 @@ import UserTypes from "../../../context/user/types";
  * Main App's Header.
  * @return {JSX} - Logo and Menu elements.
  */
-export default function Header() {
+const Header = () => {
   // Context for retrieving User state from AppContext and dispatching updates if User logs out
   const { state, dispatch } = useContext(AppContext);
 
@@ -75,4 +75,6 @@ export default function Header() {
       </Container>
     </header>
   );
-}
+};
+
+export default Header;
