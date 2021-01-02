@@ -10,9 +10,9 @@ interface IProps {
  * Content Container used as main content wrapper.
  * @param {Object} children - Wrapped children elements.
  * @param {string} className - Additional class names parsed.
- * @return {children} - Parsed children elements.
+ * @return - Parsed children elements.
  */
-const Container = ({ children, className }: IProps): React.ReactNode => {
+const Container: React.FC<IProps> = ({ children, className }: IProps) => {
   return <div className={`container${className ? " " + className : ""}`}>{children}</div>;
 };
 

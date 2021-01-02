@@ -10,9 +10,9 @@ interface IProps {
  * Registration Confirmation email sent once a new User registers.
  * @param {string} email - Email used by the user during registration.
  * @param {string} username - Username used by the user during registration.
- * @return {ReactNode} - Registration Confirmation email template.
+ * @return - Registration Confirmation email template.
  */
-const RegistrationConfirmation = ({ email, username }: IProps): React.ReactNode => {
+const RegistrationConfirmation: React.FC<IProps> = ({ email, username }: IProps) => {
   return (
     <Email title="Portfolio Email!">
       <Item>Thank you for registering a new account with us. You can review your information below:</Item>

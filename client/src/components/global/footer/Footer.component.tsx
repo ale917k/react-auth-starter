@@ -6,9 +6,9 @@ import "./Footer.styles.scss";
 
 /**
  * Main App's Footer.
- * @return {JSX} - Copyright infos.
+ * @return - Copyright infos.
  */
-const Footer = () => {
+const Footer: React.FC = () => {
   // Dynamic value retrieved from current year for up-to-date copyright date
   const year = new Date().getFullYear();
 
