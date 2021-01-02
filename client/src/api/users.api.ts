@@ -105,7 +105,7 @@ export const loginUserWithToken = async (token: string): Promise<string> => {
  */
 export const authenticateUser = async (
   authData: LogUserFormType,
-  setData: (dispatch: UserDispatchType) => void,
+  setData: React.Dispatch<UserActions>,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
   const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
@@ -149,7 +149,7 @@ export const authenticateUser = async (
  */
 export const addNewUser = async (
   newData: RegUserFormType,
-  setData: (dispatch: UserDispatchType) => void,
+  setData: React.Dispatch<UserActions>,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
   const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users`, {
@@ -204,7 +204,7 @@ export const addNewUser = async (
 export const editUser = async (
   oldData: UserType,
   newData: EditUserFormType,
-  setData: (dispatch: UserDispatchType) => void,
+  setData: React.Dispatch<UserActions>,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
   if (oldData) {
