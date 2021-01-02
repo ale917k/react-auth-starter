@@ -1,3 +1,6 @@
+import UserActions from "../context/user/actions";
+import UserTypes from "../context/user/types";
+
 /**
  * Retrieve list of all Users.
  * @param {function} setData - Hook function for updating the state of the User data.
@@ -39,8 +42,8 @@ export const retrieveUsers = async (
  */
 export const retrieveUser = async (
   userId: string,
-  setData: (dispatch: UserDispatchType) => void,
-  setAlertMessage: (alertMessage: AlertMessageType) => void,
+  setData: React.Dispatch<UserActions>,
+  setAlertMessage?: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
   const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${userId}`, {
     method: "get",
@@ -50,7 +53,7 @@ export const retrieveUser = async (
     const retrievedUser = await data.json();
     if (!retrievedUser.error) {
       setData({
-        type: "SET_USER",
+        type: UserTypes.Set,
         payload: retrievedUser.result,
       });
     } else {
@@ -163,7 +166,7 @@ export const addNewUser = async (
     const newUser = await data.json();
     if (!newUser.error) {
       setData({
-        type: "SET_USER",
+        type: UserTypes.Set,
         payload: newUser.result,
       });
     } else if (
@@ -219,12 +222,13 @@ export const editUser = async (
           message: "Successfully updated details.",
         });
         setData({
-          type: "SET_USER",
+          type: UserTypes.Set,
           payload: {
             ...oldData,
             ...newData,
           },
         });
+        // Clear out success message after 5s
         setTimeout(() => {
           setAlertMessage({
             isActive: false,
