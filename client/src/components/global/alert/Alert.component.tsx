@@ -1,10 +1,10 @@
 import React from "react";
 import "./Alert.styles.scss";
 
-interface IProps {
+type PropsType = {
   severity: string;
   message: string;
-}
+};
 
 /**
  * Alert message component.
@@ -12,7 +12,7 @@ interface IProps {
  * @param {string} message - Alert message to display.
  * @return - Alert message with appropriate styles.
  */
-const Alert: React.FC<IProps> = ({ severity, message }: IProps) => {
+const Alert: React.FC<PropsType> = ({ severity, message }: PropsType) => {
   return <div className={`alert ${severity}`}>{message}</div>;
 };
 

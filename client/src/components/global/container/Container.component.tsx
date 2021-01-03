@@ -1,10 +1,10 @@
 import React from "react";
 import "./Container.styles.scss";
 
-interface IProps {
+type PropsType = {
   children: React.ReactNode;
   className?: string;
-}
+};
 
 /**
  * Content Container used as main content wrapper.
@@ -12,7 +12,7 @@ interface IProps {
  * @param {string} className - Additional class names parsed.
  * @return - Parsed children elements.
  */
-const Container: React.FC<IProps> = ({ children, className }: IProps) => {
+const Container: React.FC<PropsType> = ({ children, className }: PropsType) => {
   return <div className={`container${className ? " " + className : ""}`}>{children}</div>;
 };
 

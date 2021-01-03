@@ -1,19 +1,19 @@
 import React from "react";
 import "./Input.styles.scss";
 
-interface IProps {
+type PropsType = {
   onChange: (event: React.SyntheticEvent) => void;
   type: string;
   label: string;
   required: boolean;
-}
+};
 
 /**
  * Standard Input component, reusable for both Inputs and Textareas.
  * @param {Object} props - Props passed from parent component containing input attributes.
  * @return - Controlled input element.
  */
-const Input: React.FC<IProps> = ({ onChange, type, label, required, ...rest }: IProps) => {
+const Input: React.FC<PropsType> = ({ onChange, type, label, required, ...rest }: PropsType) => {
   // Check if value entered is a valid email. Ref: http://emailregex.com/
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
 

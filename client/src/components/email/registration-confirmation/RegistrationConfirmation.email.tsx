@@ -1,10 +1,10 @@
 import React from "react";
 import { Email, Item } from "react-html-email";
 
-interface IProps {
+type PropsType = {
   email: string;
   username: string;
-}
+};
 
 /**
  * Registration Confirmation email sent once a new User registers.
@@ -12,7 +12,7 @@ interface IProps {
  * @param {string} username - Username used by the user during registration.
  * @return - Registration Confirmation email template.
  */
-const RegistrationConfirmation: React.FC<IProps> = ({ email, username }: IProps) => {
+const RegistrationConfirmation: React.FC<PropsType> = ({ email, username }: PropsType) => {
   return (
     <Email title="Portfolio Email!">
       <Item>Thank you for registering a new account with us. You can review your information below:</Item>
