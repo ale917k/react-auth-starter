@@ -1,27 +1,38 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
 import { renderEmail } from "react-html-email";
-
 import Input from "../input/Input.component";
 import Alert from "../alert/Alert.component";
-import ContactEmail from "../../email/registration-confirmation/RegistrationConfirmation.email";
-
+import RegistrationConfirmation from "../../email/registration-confirmation/RegistrationConfirmation.email";
 import { AppContext } from "../../../context/context";
-
 import { addNewUser, authenticateUser, editUser } from "../../../api/users.api";
-
 import "./CardForm.styles.scss";
 
+type InputType = {
+  id: string;
+  type: string;
+  name: string;
+  label: string;
+  required: boolean;
+};
+
+type PropsType = {
+  title: string;
+  initialForm: Record<string, string>;
+  inputList: Array<InputType>;
+  requestType: string;
+  buttonText: string;
+};
+
 /**
- * CardForm component used to handle any CRUD method through form and Hooks.
+ * Handle any CRUD method through dynamic form and Hooks.
  * @param {string} title - Title to display on top of the form.
  * @param {Object} initialForm - Initial shape of the form data.
  * @param {array} inputList - List of inputs and related attributes to display on the form.
  * @param {string} requestType - Type of CRUD request to apply.
  * @param {string} buttonText - Text to display on submit button.
- * @return {JSX} - Generic form to apply CRUD methods to server.
+ * @return - Generic form to apply CRUD methods to server.
  */
-const CardForm = ({ title, initialForm, inputList, requestType, buttonText }) => {
+const CardForm: React.FC<PropsType> = ({ title, initialForm, inputList, requestType, buttonText }: PropsType) => {
   // Context for retrieving and dispatching User state from and to AppContext
   const { state, dispatch } = useContext(AppContext);
 
@@ -37,33 +48,39 @@ const CardForm = ({ title, initialForm, inputList, requestType, buttonText }) =>
   const [alertMessage, setAlertMessage] = useState(initialAlertMessage);
 
   // Listen to form inputs and updates form state respectively
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (event: React.SyntheticEvent) => {
+    const { name, value } = event.target as HTMLInputElement;
     setForm({ ...form, [name]: value });
     setAlertMessage(initialAlertMessage);
   };
 
   // Trigger CRUD request to server
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     // Create temp form obj and remove empty fields
     const filteredForm = form;
     Object.keys(filteredForm).forEach((key) => filteredForm[key] === "" && delete filteredForm[key]);
 
-    switch (requestType) {
-      case "addNewUser":
-        const messageHtml = renderEmail(<ContactEmail {...form} />);
-        addNewUser({ ...form, messageHtml }, dispatch, setAlertMessage);
-        break;
-      case "loginUser":
-        authenticateUser(form, dispatch, setAlertMessage);
-        break;
-      case "editUser":
-        editUser(state.user, filteredForm, dispatch, setAlertMessage);
-        break;
-      default:
-        break;
+    if (form.email) {
+      switch (requestType) {
+        case "addNewUser":
+          const messageHtml = renderEmail(<RegistrationConfirmation email={form.email} username={form.username} />);
+          addNewUser(
+            { email: form.email, username: form.username, password: form.password, messageHtml },
+            dispatch,
+            setAlertMessage,
+          );
+          break;
+        case "loginUser":
+          authenticateUser(form as LogUserFormType, dispatch, setAlertMessage);
+          break;
+        case "editUser":
+          editUser(state.user, filteredForm, dispatch, setAlertMessage);
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -74,9 +91,10 @@ const CardForm = ({ title, initialForm, inputList, requestType, buttonText }) =>
       {alertMessage.isActive && <Alert severity={alertMessage.severity} message={alertMessage.message} />}
 
       <form onSubmit={handleSubmit}>
-        {inputList.map(({ type, name, label, required }, index) => (
+        {inputList.map(({ id, type, name, label, required }, index) => (
           <Input
             key={`${name}-${index}`}
+            id={id}
             type={type}
             name={name}
             label={label}
@@ -91,14 +109,6 @@ const CardForm = ({ title, initialForm, inputList, requestType, buttonText }) =>
       </form>
     </div>
   );
-};
-
-CardForm.propTypes = {
-  title: PropTypes.string,
-  initialForm: PropTypes.obj,
-  inputList: PropTypes.array,
-  requestType: PropTypes.string,
-  buttonText: PropTypes.string,
 };
 
 export default CardForm;
