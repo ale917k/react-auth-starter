@@ -7,18 +7,20 @@ import "./Login.styles.scss";
 
 /**
  * Login page for logging into user account on form submission.
- * @return {JSX} - Controlled form which triggers a POST request at /users/signin on form submission.
+ * @return - Controlled form which triggers a POST request at /users/signin on form submission.
  */
-export default function Login() {
+const Login: React.FC = () => {
   // Form for logging User into account
   const loginForm = [
     {
+      id: "log_username",
       type: "username",
       name: "username",
       label: "Username",
       required: true,
     },
     {
+      id: "log_password",
       type: "password",
       name: "password",
       label: "Password",
@@ -32,7 +34,6 @@ export default function Login() {
         <CardForm
           title="Login"
           initialForm={{
-            email: "",
             username: "",
             password: "",
           }}
@@ -43,4 +44,6 @@ export default function Login() {
       </Container>
     </section>
   );
-}
+};
+
+export default Login;
