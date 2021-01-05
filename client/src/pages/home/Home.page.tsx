@@ -4,8 +4,10 @@ import "./Home.styles.scss";
 
 /**
  * Basic Home page.
- * @return {JSX} - Home page content.
+ * @return - Home page content.
  */
-export default function Home() {
+const Home: React.FC = () => {
   return <div className="home">Home Page</div>;
-}
+};
+
+export default Home;
