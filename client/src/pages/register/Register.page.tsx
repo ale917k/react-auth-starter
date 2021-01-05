@@ -7,24 +7,27 @@ import "./Register.styles.scss";
 
 /**
  * Register page for creating new accounts on form submission.
- * @return {JSX} - Controlled form which triggers a POST request at /users on form submission.
+ * @return - Controlled form which triggers a POST request at /users on form submission.
  */
-export default function Register() {
+const Register: React.FC = () => {
   // Form for registering new User
   const registerForm = [
     {
+      id: "reg_email",
       type: "email",
       name: "email",
       label: "Email",
       required: true,
     },
     {
+      id: "reg_username",
       type: "username",
       name: "username",
       label: "Username",
       required: true,
     },
     {
+      id: "reg_password",
       type: "password",
       name: "password",
       label: "Password",
@@ -49,4 +52,6 @@ export default function Register() {
       </Container>
     </section>
   );
-}
+};
+
+export default Register;
