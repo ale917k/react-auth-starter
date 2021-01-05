@@ -41,7 +41,6 @@ type UserDispatchType = {
 
 // Log User form
 type LogUserFormType = {
-  email: string;
   username: string;
   password: string;
 };

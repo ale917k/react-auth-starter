@@ -3,8 +3,11 @@ import "./Input.styles.scss";
 
 type PropsType = {
   onChange: (event: React.SyntheticEvent) => void;
+  id: string;
   type: string;
+  name: string;
   label: string;
+  value: string;
   required: boolean;
 };
 
@@ -13,26 +16,33 @@ type PropsType = {
  * @param {Object} props - Props passed from parent component containing input attributes.
  * @return - Controlled input element.
  */
-const Input: React.FC<PropsType> = ({ onChange, type, label, required, ...rest }: PropsType) => {
+const Input: React.FC<PropsType> = ({ id, onChange, type, label, required, ...rest }: PropsType) => {
   // Check if value entered is a valid email. Ref: http://emailregex.com/
   const emailPattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
 
   // Updates handleChange parent function and checks for deep email validation
-  const handleChange = (event: React.SyntheticEvent) => {
-    const { type, value, setCustomValidity } = event.target as HTMLInputElement;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { type, value } = event.target as HTMLInputElement;
     onChange(event);
 
     if (type === "email" && !emailPattern.test(value)) {
-      setCustomValidity("Please select a valid email address.");
+      event.target.setCustomValidity("Please select a valid email address.");
     } else {
-      setCustomValidity("");
+      event.target.setCustomValidity("");
     }
   };
 
   return (
     <div className="input">
-      <input placeholder=" " {...rest} onChange={handleChange} minLength={type === "password" ? 8 : undefined} />
-      <label>
+      <input
+        id={id}
+        type={type}
+        placeholder=" "
+        {...rest}
+        onChange={handleChange}
+        minLength={type === "password" ? 8 : undefined}
+      />
+      <label htmlFor={id}>
         {label}
         {required && " *"}
       </label>
