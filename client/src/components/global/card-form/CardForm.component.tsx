@@ -59,28 +59,28 @@ const CardForm: React.FC<PropsType> = ({ title, initialForm, inputList, requestT
     event.preventDefault();
 
     // Create temp form obj and remove empty fields
-    const filteredForm = form;
-    Object.keys(filteredForm).forEach((key) => filteredForm[key] === "" && delete filteredForm[key]);
+    const filteredForm = Object.entries(form).reduce(
+      (acc, [key, value]) => ({ ...acc, ...(value !== "" && { [key]: value }) }),
+      {},
+    );
 
-    if (form.email) {
-      switch (requestType) {
-        case "addNewUser":
-          const messageHtml = renderEmail(<RegistrationConfirmation email={form.email} username={form.username} />);
-          addNewUser(
-            { email: form.email, username: form.username, password: form.password, messageHtml },
-            dispatch,
-            setAlertMessage,
-          );
-          break;
-        case "loginUser":
-          authenticateUser(form as LogUserFormType, dispatch, setAlertMessage);
-          break;
-        case "editUser":
-          editUser(state.user, filteredForm, dispatch, setAlertMessage);
-          break;
-        default:
-          break;
-      }
+    switch (requestType) {
+      case "addNewUser":
+        const messageHtml = renderEmail(<RegistrationConfirmation email={form.email} username={form.username} />);
+        addNewUser(
+          { email: form.email, username: form.username, password: form.password, messageHtml },
+          dispatch,
+          setAlertMessage,
+        );
+        break;
+      case "loginUser":
+        authenticateUser(form as LogUserFormType, dispatch, setAlertMessage);
+        break;
+      case "editUser":
+        editUser(state.user, filteredForm, dispatch, setAlertMessage);
+        break;
+      default:
+        break;
     }
   };
 

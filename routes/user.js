@@ -1,6 +1,5 @@
 const express = require("express"),
   passport = require("passport"),
-  nodemailer = require("nodemailer"),
   router = express.Router();
 
 // User model
@@ -8,19 +7,10 @@ const User = require("../models/User");
 
 // User controllers
 const signin = require("../controllers/signin");
+const signup = require("../controllers/signup");
 
 router.use(passport.initialize());
 router.use(passport.session());
-
-// Set up transport protocols and authentication
-const transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: process.env.MAIL_USER_KEY,
-    pass: process.env.MAIL_PASS_KEY,
-  },
-});
 
 // Requests targetting all Users
 router
@@ -41,47 +31,7 @@ router
         });
       });
   })
-  .post((req, res) => {
-    User.register(
-      { email: req.body.email, username: req.body.username },
-      req.body.password
-    )
-      .then((result) => {
-        passport.authenticate("local")(req, res, () => {
-          const registrationConfirmationEmail = {
-            from: process.env.MAIL_SENDER,
-            to: req.body.email,
-            subject: "Registration Confirmation",
-            html: req.body.messageHtml,
-          };
-
-          transport.sendMail(registrationConfirmationEmail, (err, info) => {
-            if (err) {
-              res.status(500).json({
-                message: "Failed Sending Email",
-                error: err,
-              });
-            } else {
-              res.status(201).json({
-                message: "Created User Successfully",
-                result: {
-                  ...result._doc,
-                  hash: undefined,
-                  salt: undefined,
-                },
-              });
-            }
-          });
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          message: "Failed Creating User",
-          error: err,
-        });
-      });
-  });
+  .post(signup.signupAuthentication(User, passport));
 
 // Requests targetting a specific User
 router.post("/signin", signin.signinAuthentication(User, passport));

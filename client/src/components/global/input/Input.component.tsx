@@ -38,6 +38,7 @@ const Input: React.FC<PropsType> = ({ id, onChange, type, label, required, ...re
         id={id}
         type={type}
         placeholder=" "
+        required={required}
         {...rest}
         onChange={handleChange}
         minLength={type === "password" ? 8 : undefined}

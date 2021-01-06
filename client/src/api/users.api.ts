@@ -81,7 +81,6 @@ export const retrieveUser = async (
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
 export const loginUserWithToken = async (token: string): Promise<string> => {
-  console.log("token", token);
   const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
     method: "post",
     headers: {
@@ -91,7 +90,6 @@ export const loginUserWithToken = async (token: string): Promise<string> => {
   });
   const authenticatedUser = await data.json();
   if (!authenticatedUser.error && authenticatedUser.id) {
-    console.log("authenticatedUser", typeof authenticatedUser.id);
     return authenticatedUser.id;
   }
   return "";
@@ -165,10 +163,9 @@ export const addNewUser = async (
   try {
     const newUser = await data.json();
     if (!newUser.error) {
-      setData({
-        type: UserTypes.Set,
-        payload: newUser.result,
-      });
+      retrieveUser(newUser.userId, setData, setAlertMessage);
+      // Set localStorage token
+      window.localStorage.setItem("token", newUser.token);
     } else if (
       newUser.error.name === "UserExistsError" ||
       (newUser.error.name === "MongoError" && newUser.error.keyPattern)
