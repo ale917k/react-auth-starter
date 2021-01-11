@@ -1,21 +1,21 @@
 import React, { useContext, lazy, Suspense, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { loginUserWithToken, retrieveUser } from "../../api/users.api";
-import { AppContext } from "../../context/context";
+import { loginUserWithToken, retrieveUser } from "../api/users.api";
+import { AppContext } from "../context/context";
 
-import Header from "../../components/global/header/Header.component";
-import Footer from "../../components/global/footer/Footer.component";
-import Spinner from "../../components/global/spinner/Spinner.component";
+import Header from "../components/global/header/Header.component";
+import Footer from "../components/global/footer/Footer.component";
+import Spinner from "../components/global/spinner/Spinner.component";
 
 import "./App.styles.scss";
 
 // Lazy loaded pages
-const Landing = lazy(() => import("../landing/Landing.page"));
-const Home = lazy(() => import("../home/Home.page"));
-const Register = lazy(() => import("../register/Register.page"));
-const Login = lazy(() => import("../login/Login.page"));
-const Account = lazy(() => import("../account/Account.page"));
-const PageNotFound = lazy(() => import("../page-not-found/PageNotFound.page"));
+const Landing = lazy(() => import("../pages/landing/Landing.page"));
+const Home = lazy(() => import("../pages/home/Home.page"));
+const Register = lazy(() => import("../pages/register/Register.page"));
+const Login = lazy(() => import("../pages/login/Login.page"));
+const Account = lazy(() => import("../pages/account/Account.page"));
+const PageNotFound = lazy(() => import("../pages/page-not-found/PageNotFound.page"));
 
 // Lazy loaded routes
 const routes = [
