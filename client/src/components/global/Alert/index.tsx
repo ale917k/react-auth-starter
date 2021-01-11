@@ -1,5 +1,5 @@
 import React from "react";
-import "./Alert.styles.scss";
+import "./styles.scss";
 
 type PropsType = {
   severity: string;

@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { AppContext } from "../../context/context";
-
-import Container from "../../components/global/container/Container.component";
-import CardForm from "../../components/global/card-form/CardForm.component";
-
-import "./Account.styles.scss";
+import Container from "../../components/global/Container";
+import CardForm from "../../components/global/CardForm";
+import "./styles.scss";
 
 /**
  * Basic Account page.

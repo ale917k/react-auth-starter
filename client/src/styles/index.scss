@@ -40,8 +40,8 @@
 
 html,
 body {
-  font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Rubik, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+    Droid Sans, Helvetica Neue, sans-serif;
   font-size: 15px;
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -49,8 +49,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 a {
@@ -62,5 +61,5 @@ img {
   width: 100%;
 }
 
-@import "./typography.styles.scss";
-@import "./buttons.styles.scss";
+@import "./typography.scss";
+@import "./buttons.scss";

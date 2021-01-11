@@ -1,6 +1,5 @@
 import React from "react";
-
-import "./PageNotFound.styles.scss";
+import "./styles.scss";
 
 /**
  * Basic fallback page when no page is found on selected route.

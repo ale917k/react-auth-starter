@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import { renderEmail } from "react-html-email";
-import Input from "../input/Input.component";
-import Alert from "../alert/Alert.component";
-import RegistrationConfirmation from "../../email/registration-confirmation/RegistrationConfirmation.email";
+import Input from "../Input";
+import Alert from "../Alert";
+import RegistrationConfirmation from "../../email/RegistrationConfirmation";
 import { AppContext } from "../../../context/context";
 import { addNewUser, authenticateUser, editUser } from "../../../api/users.api";
-import "./CardForm.styles.scss";
+import "./styles.scss";
 
 type InputType = {
   id: string;

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../../../context/context";
-import Container from "../container/Container.component";
-import "./Header.styles.scss";
+import Container from "../Container";
+import "./styles.scss";
 import { ReactComponent as LogoSvg } from "../../../assets/logo.svg";
 import UserTypes from "../../../context/user/types";
 

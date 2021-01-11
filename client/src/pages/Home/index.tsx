@@ -1,6 +1,5 @@
 import React from "react";
-
-import "./Home.styles.scss";
+import "./styles.scss";
 
 /**
  * Basic Home page.

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Input.styles.scss";
+import "./styles.scss";
 
 type PropsType = {
   onChange: (event: React.SyntheticEvent) => void;

@@ -1,9 +1,7 @@
 import React from "react";
-
-import Container from "../../components/global/container/Container.component";
-import CardForm from "../../components/global/card-form/CardForm.component";
-
-import "./Login.styles.scss";
+import Container from "../../components/global/Container";
+import CardForm from "../../components/global/CardForm";
+import "./styles.scss";
 
 /**
  * Login page for logging into user account on form submission.

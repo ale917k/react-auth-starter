@@ -1,6 +1,5 @@
 import React from "react";
-
-import "./Landing.styles.scss";
+import "./styles.scss";
 
 /**
  * Basic Landing page.

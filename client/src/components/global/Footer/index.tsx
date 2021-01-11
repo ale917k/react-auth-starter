@@ -1,6 +1,6 @@
 import React from "react";
-import Container from "../container/Container.component";
-import "./Footer.styles.scss";
+import Container from "../Container";
+import "./styles.scss";
 
 /**
  * Main App's Footer.

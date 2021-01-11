@@ -1,9 +1,7 @@
 import React from "react";
-
-import Container from "../../components/global/container/Container.component";
-import CardForm from "../../components/global/card-form/CardForm.component";
-
-import "./Register.styles.scss";
+import Container from "../../components/global/Container";
+import CardForm from "../../components/global/CardForm";
+import "./styles.scss";
 
 /**
  * Register page for creating new accounts on form submission.

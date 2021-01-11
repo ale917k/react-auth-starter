@@ -1,5 +1,5 @@
 import React from "react";
-import "./Spinner.styles.scss";
+import "./styles.scss";
 
 /**
  * Spinner component, used when lazy loading pages / components.

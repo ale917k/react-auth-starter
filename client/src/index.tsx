@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 
-import App from "./app/App";
+import App from "./App";
 
 import { AppProvider } from "./context/context";
 
-import "./styles/index.styles.scss";
+import "./styles/index.scss";
 
 import register from "./serviceWorker";
 import reportWebVitals from "./reportWebVitals";
