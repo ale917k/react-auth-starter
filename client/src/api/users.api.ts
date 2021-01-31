@@ -6,12 +6,11 @@ import UserTypes from "../context/user/types";
  * @param {function} setData - Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
-
 export const retrieveUsers = async (
   setData: (user: UserType) => void,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
-  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users`, {
+  const data = await fetch("/users", {
     method: "get",
     headers: { "Content-Type": "application/json" },
   });
@@ -45,7 +44,7 @@ export const retrieveUser = async (
   setData: React.Dispatch<UserActions>,
   setAlertMessage?: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
-  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${userId}`, {
+  const data = await fetch(`/users/${userId}`, {
     method: "get",
     headers: { "Content-Type": "application/json" },
   });
@@ -81,7 +80,7 @@ export const retrieveUser = async (
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
  */
 export const loginUserWithToken = async (token: string): Promise<string> => {
-  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
+  const data = await fetch("/users/signin", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -106,7 +105,7 @@ export const authenticateUser = async (
   setData: React.Dispatch<UserActions>,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
-  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/signin`, {
+  const data = await fetch("/users/signin", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(authData),
@@ -150,7 +149,7 @@ export const addNewUser = async (
   setData: React.Dispatch<UserActions>,
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
-  const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users`, {
+  const data = await fetch("/users", {
     method: "post",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -205,7 +204,7 @@ export const editUser = async (
   setAlertMessage: (alertMessage: AlertMessageType) => void,
 ): Promise<void> => {
   if (oldData) {
-    const data = await fetch(`${process.env.REACT_APP_ENDPOINT}/users/${oldData._id}`, {
+    const data = await fetch(`/users/${oldData._id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newData),

@@ -1,0 +1,37 @@
+{
+  "name": "react-auth-starter-server",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/ale917k/react-auth-starter#readme",
+  "bugs": {
+    "url": "https://github.com/ale917k/react-auth-starter/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ale917k/react-auth-starter.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "server.js",
+  "scripts": {
+    "server": "docker-compose down; docker-compose up --build",
+    "start": "nodemon index.js --legacy-watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.7",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.4.17",
+    "passport": "^0.4.1",
+    "passport-local-mongoose": "^6.0.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

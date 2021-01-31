@@ -45,8 +45,8 @@ const signinAuthentication = (User, passport) => (req, res) => {
         .getAuthTokenId(authorization)
         .then((reply) => res.status(201).json(reply))
         .catch((err) =>
-          res.status(400).json({
-            message: "Unauthorized",
+          res.status(401).json({
+            message: "Unauthorized access",
             error: err,
           })
         )

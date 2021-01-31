@@ -37,7 +37,7 @@ router
 router.post("/signin", signin.signinAuthentication(User, passport));
 
 router.get("/failedSignin", (req, res) => {
-  res.status(500).json({
+  res.status(401).json({
     error: "Unauthorized Access",
   });
 });

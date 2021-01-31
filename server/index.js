@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== "production") require("dotenv").config();
 const userAPI = require("./routes/user");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 app.use(morgan("combined"));
 app.use(cors());

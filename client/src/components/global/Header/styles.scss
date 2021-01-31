@@ -58,6 +58,7 @@
     cursor: pointer;
     transition: background-color var(--transition-timing) var(--transition-animation);
     z-index: 1;
+    overflow: hidden;
 
     &:hover {
       background-color: var(--color-white-alt);
