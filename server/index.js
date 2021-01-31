@@ -31,7 +31,7 @@ mongoose
       console.log("MongoDB successfully connected");
     },
     (error) => {
-      console.log("MongoDB could not be connected: " + error);
+      console.log("MongoDB could not be connected.", error);
     }
   );
 mongoose.set("useCreateIndex", true);
