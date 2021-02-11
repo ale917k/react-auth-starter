@@ -1,19 +1,5 @@
 {
   "name": "react-auth-starter-server",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "homepage": "https://github.com/ale917k/react-auth-starter#readme",
-  "bugs": {
-    "url": "https://github.com/ale917k/react-auth-starter/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ale917k/react-auth-starter.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "main": "server.js",
   "scripts": {
     "server": "docker-compose down; docker-compose up --build",
     "start": "nodemon index.js --legacy-watch",

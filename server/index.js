@@ -17,7 +17,8 @@ app.use(express.json());
 
 app.use("/public", express.static("public"));
 
-app.use("/users", userAPI);
+const baseURL = process.env.NODE_ENV === "development" ? "/api" : "";
+app.use(`${baseURL}/users`, userAPI);
 
 // MongoDB Configuration
 mongoose.Promise = global.Promise;
@@ -45,10 +46,12 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/", (req, res) => {
+app.get(`${baseURL}/`, (req, res) => {
   res.status(201).send(`Server successfully connected on port ${port}`);
 });
 
 app.listen(port, () => {
-  console.log(`Server is up and running on port ${port}`);
+  console.log(
+    `Server is up and running on ${process.env.NODE_ENV} - port ${port}`
+  );
 });

@@ -10,8 +10,9 @@ services:
     working_dir: /app/server/
     env_file: .env
     environment:
-      MONGO_URI: $MONGO_URI
-      REDIS_URI: $REDIS_URI
+      NODE_ENV: development
+      MONGO_URI: $MONGO_DEV_URI
+      REDIS_URI: $REDIS_DEV_URI
     ports:
       - "8080:8080"
     volumes:

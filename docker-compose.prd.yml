@@ -14,13 +14,14 @@ services:
         awslogs-stream-prefix: web
 
   # Node Server
-  server:
+  node:
     image: 163575307513.dkr.ecr.eu-west-2.amazonaws.com/react-auth-starter-server:latest
     command: npm start
     env_file: .env
     environment:
-      MONGO_URI: $MONGO_URI
-      REDIS_URI: $REDIS_URI
+      NODE_ENV: production
+      MONGO_URI: $MONGO_PRD_URI
+      REDIS_URI: $REDIS_PRD_URI
     ports:
       - "8080:8080"
     logging:
@@ -28,7 +29,7 @@ services:
       options:
         awslogs-group: react-auth-starter
         awslogs-region: eu-west-2
-        awslogs-stream-prefix: server
+        awslogs-stream-prefix: node
 
   # MongoDB
   mongodb:
