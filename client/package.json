@@ -4,7 +4,7 @@
     "build": "react-scripts build",
     "bundle": "npm build -- --stats; webpack-bundle-analyzer build/bundle-stats.json",
     "coverage": "npm run test -- --coverage --watchAll=false",
-    "start": "react-scripts start",
+    "start": "tsc -w & react-scripts start",
     "test": "react-scripts test",
     "test:tsc": "tsc -p tsconfig.test.json -w"
   },
