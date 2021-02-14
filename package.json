@@ -11,7 +11,7 @@
     "preinstall": "cd client; npm install --legacy-peer-deps; cd ../server; npm install",
     "server": "cp docker-compose.dev.yml docker-compose.yml; docker-compose down; docker-compose up --build --remove-orphans",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "prod": "cp docker-compose.prd.yml docker-compose.yml; docker-compose down; docker-compose up --build --remove-orphans"
+    "prod": "cp docker-compose.prd.yml docker-compose.yml"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"

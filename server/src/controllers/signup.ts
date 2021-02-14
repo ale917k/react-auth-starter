@@ -1,7 +1,15 @@
-const nodemailer = require("nodemailer");
+import { Request, Response } from "express";
+import passport from "passport";
+import nodemailer from "nodemailer";
+import { PassportLocalModel } from "mongoose";
+import { UserDocument } from "./../models/User";
+import { createSessions } from "./sessions";
 
-// Session util
-const sessions = require("./sessions");
+type ServerResponseType = {
+  message: string;
+  result: UserDocument;
+  error: string;
+};
 
 // Set up transport protocols and authentication
 const transport = nodemailer.createTransport({
@@ -14,12 +22,11 @@ const transport = nodemailer.createTransport({
 });
 
 // Register new user through passport authentication
-const handleSignup = (User, passport, req, res) => {
+const handleSignup = (User: PassportLocalModel<UserDocument>, req: Request, res: Response) => {
+  const user = new User({ email: req.body.email, username: req.body.username });
+
   return new Promise((resolve, reject) => {
-    User.register(
-      { email: req.body.email, username: req.body.username },
-      req.body.password
-    )
+    User.register(user, req.body.password)
       .then((result) => {
         passport.authenticate("local")(req, res, () => {
           const registrationConfirmationEmail = {
@@ -36,13 +43,10 @@ const handleSignup = (User, passport, req, res) => {
                 error: err,
               });
             } else {
+              const { hash, salt, ...newUser } = result;
               resolve({
                 message: "Created User Successfully",
-                result: {
-                  ...result._doc,
-                  hash: undefined,
-                  salt: undefined,
-                },
+                result: newUser,
               });
             }
           });
@@ -59,17 +63,11 @@ const handleSignup = (User, passport, req, res) => {
 };
 
 // Register new user and generate new session
-const signupAuthentication = (User, passport) => (req, res) => {
-  handleSignup(User, passport, req, res)
-    .then((data) =>
-      data.result._id
-        ? sessions.createSessions(data.result)
-        : Promise.reject(data)
-    )
+const signupAuthentication = (User: PassportLocalModel<UserDocument>) => (req: Request, res: Response) => {
+  handleSignup(User, req, res)
+    .then((data: ServerResponseType) => (data.result._id ? createSessions(data.result) : Promise.reject(data)))
     .then((session) => res.status(201).json(session))
     .catch((err) => res.status(500).json(err));
 };
 
-module.exports = {
-  signupAuthentication: signupAuthentication,
-};
+export default signupAuthentication;

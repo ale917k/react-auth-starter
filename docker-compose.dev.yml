@@ -38,10 +38,10 @@ services:
     ports:
       - "27017-27019:27017-27019"
     volumes:
-      - ./server/database/mongod.conf:/etc/mongod.conf
-      - ./server/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - ./server/database/data/:/data/db
-      - ./server/database/:/var/log/mongodb/
+      - ./server/src/database/mongod.conf:/etc/mongod.conf
+      - ./server/src/database/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./server/src/database/data/:/data/db
+      - ./server/src/database/:/var/log/mongodb/
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/authStarterDB --quiet
       interval: 10s

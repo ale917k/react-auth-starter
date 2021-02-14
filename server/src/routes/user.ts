@@ -1,21 +1,18 @@
-const express = require("express"),
-  passport = require("passport"),
-  router = express.Router();
+import express from "express";
+import passport from "passport";
+import { NativeError } from "mongoose";
+import User from "../models/User";
+import signinAuthentication from "../controllers/signin";
+import signupAuthentication from "../controllers/signup";
 
-// User model
-const User = require("../models/User");
-
-// User controllers
-const signin = require("../controllers/signin");
-const signup = require("../controllers/signup");
-
+const router = express.Router();
 router.use(passport.initialize());
 router.use(passport.session());
 
 // Requests targetting all Users
 router
   .route("/")
-  .get((req, res) => {
+  .get((_, res) => {
     User.find()
       .then((result) => {
         res.status(201).json({
@@ -31,12 +28,12 @@ router
         });
       });
   })
-  .post(signup.signupAuthentication(User, passport));
+  .post(signupAuthentication(User));
 
 // Requests targetting a specific User
-router.post("/signin", signin.signinAuthentication(User, passport));
+router.post("/signin", signinAuthentication(User));
 
-router.get("/failedSignin", (req, res) => {
+router.get("/failedSignin", (_, res) => {
   res.status(401).json({
     error: "Unauthorized Access",
   });
@@ -65,34 +62,26 @@ router
     if (req.body.oldPassword) {
       User.findOne({ _id: req.params.userId })
         .then((user) => {
+          console.log("user", user);
           if (user) {
-            user.changePassword(
-              req.body.oldPassword,
-              req.body.newPassword,
-              (err) => {
-                if (err) {
-                  res.status(500).json({
-                    message:
-                      "Incorrect Old Password. Failed Setting New Password",
-                    error: err,
-                  });
-                } else {
-                  res.status(201).json({
-                    message: "Set New Password Successfully",
-                    result: {
-                      ...user._doc,
-                      hash: undefined,
-                      salt: undefined,
-                    },
-                  });
-                }
+            user.changePassword(req.body.oldPassword, req.body.newPassword, (err) => {
+              if (err) {
+                res.status(500).json({
+                  message: "Incorrect Old Password. Failed Setting New Password",
+                  error: err,
+                });
+              } else {
+                const { hash, salt, ...updatedUser } = user;
+                res.status(201).json({
+                  message: "Set New Password Successfully",
+                  result: updatedUser,
+                });
               }
-            );
+            });
           } else {
-            console.log(err);
             res.status(500).json({
               message: "This User does not exist. Failed Setting New Password",
-              error: err,
+              error: true,
             });
           }
         })
@@ -108,7 +97,7 @@ router
       User.findOne({ _id: req.params.userId })
         .then((user) => {
           if (user) {
-            user.setPassword(req.body.newPassword, (err) => {
+            user.setPassword(req.body.newPassword, (err: NativeError) => {
               if (err) {
                 res.status(500).json({
                   message: "Failed Resetting Password",
@@ -116,21 +105,17 @@ router
                 });
               } else {
                 user.save();
+                const { hash, salt, ...updatedUser } = user;
                 res.status(201).json({
                   message: "Resetted Password Successfully",
-                  result: {
-                    ...user._doc,
-                    hash: undefined,
-                    salt: undefined,
-                  },
+                  result: updatedUser,
                 });
               }
             });
           } else {
-            console.log(err);
             res.status(500).json({
               message: "This User does not exist. Failed Resetting Password",
-              error: err,
+              error: true,
             });
           }
         })
@@ -147,9 +132,9 @@ router
         { _id: req.params.userId },
         {
           ...req.body,
-        }
+        },
       )
-        .then((result, test) => {
+        .then((result) => {
           res.status(201).json({
             message: "Updated User Successfully",
             result: result,
@@ -181,4 +166,4 @@ router
       });
   });
 
-module.exports = router;
+export default router;

@@ -1,11 +1,12 @@
-const jwt = require("jsonwebtoken"),
-  redis = require("redis");
+import jwt from "jsonwebtoken";
+import redis from "redis";
+import { UserDocument } from "../models/User";
 
 // Set up Redis client
 const redisClient = redis.createClient(process.env.REDIS_URI);
 
 // Retrieve Redis token if any
-const getAuthTokenId = (authorization) => {
+export const getAuthTokenId = (authorization: string) => {
   return new Promise((resolve, reject) => {
     redisClient.get(authorization, (err, reply) => {
       if (err || !reply) {
@@ -17,17 +18,17 @@ const getAuthTokenId = (authorization) => {
 };
 
 // Sign JWT token
-const signToken = (_id) => {
+const signToken = (_id: string) => {
   const jwtPayload = { _id };
 
   return jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: "2 days" });
 };
 
 // Save token to Redis database
-const setToken = (key, value) => Promise.resolve(redisClient.set(key, value));
+const setToken = (key: string, value: string) => Promise.resolve(redisClient.set(key, value));
 
 // Create user session with JWT token saved on Redis database
-const createSessions = async (user) => {
+export const createSessions = async (user: UserDocument) => {
   const { _id } = user;
 
   const token = signToken(_id);
@@ -38,9 +39,4 @@ const createSessions = async (user) => {
   } catch (err) {
     return err;
   }
-};
-
-module.exports = {
-  createSessions: createSessions,
-  getAuthTokenId: getAuthTokenId,
 };
