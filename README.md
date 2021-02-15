@@ -2,7 +2,7 @@
 
 React Auth Starter is a template for React Apps requiring User authentication.
 
-[Open Live Project](http://18.134.182.82)
+[Open Live Project](https://www.reactauthstarter.online/)
 
 ## What It Uses:
 
