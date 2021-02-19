@@ -47,7 +47,7 @@ REDIS_DEV_URI=redis://redis:6379
 REDIS_PRD_URI=redis://localhost:6379
 ```
 
-You can then run `npm start` which will boot up all services (client, server, postgres, redis) concurrently.
+You can then run `npm start` which will boot up all services (client, server, mongodb, redis) concurrently.
 
 ## License
 
