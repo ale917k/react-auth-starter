@@ -2,6 +2,19 @@ import UserActions from "../context/user/actions";
 import UserTypes from "../context/user/types";
 
 /**
+ * Simple util for checking if var is obj; If so, return string of it.
+ * @param {unknown} obj - Expected object to stringify, but handles any.
+ * @return {string | boolean} - Stringified var if obj, false if it is not.
+ */
+const objToString = (obj: unknown): string | boolean => {
+  if (Object.prototype.toString.call(obj) === "[object Object]") {
+    return JSON.stringify(obj);
+  } else {
+    return false;
+  }
+};
+
+/**
  * Retrieve list of all Users.
  * @param {function} setData - Hook function for updating the state of the User data.
  * @param {function} setAlertMessage - Hook state for displaying error / success messages.
@@ -22,14 +35,15 @@ export const retrieveUsers = async (
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: `Error retrieving users. Error Reference: ${retrievedUsers.message}: ${retrievedUsers.error}`,
+        message: `Error retrieving users. Ref: ${retrievedUsers.message}: ${retrievedUsers.error}`,
       });
     }
   } catch (err) {
+    const printErr = objToString(err) || err;
     setAlertMessage({
       isActive: true,
       severity: "error",
-      message: `Error retrieving users. Error Reference: ${err}`,
+      message: `Error retrieving users. Ref: ${printErr}`,
     });
   }
 };
@@ -60,15 +74,16 @@ export const retrieveUser = async (
         setAlertMessage({
           isActive: true,
           severity: "error",
-          message: `Error retrieving user. Error Reference: ${retrievedUser.message}: ${retrievedUser.error}`,
+          message: `Error retrieving user. Ref: ${retrievedUser.message}: ${retrievedUser.error}`,
         });
     }
   } catch (err) {
+    const printErr = objToString(err) || err;
     setAlertMessage &&
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: `Error retrieving user. Error Reference: ${err}`,
+        message: `Error retrieving user. Ref: ${printErr}`,
       });
   }
 };
@@ -116,7 +131,7 @@ export const authenticateUser = async (
       retrieveUser(authenticatedUser.userId, setData, setAlertMessage);
       // Set localStorage token
       window.localStorage.setItem("token", authenticatedUser.token);
-    } else if (authenticatedUser.error === "Unauthorized Access") {
+    } else if (authenticatedUser.message === "Unauthorized access") {
       setAlertMessage({
         isActive: true,
         severity: "error",
@@ -126,14 +141,14 @@ export const authenticateUser = async (
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: `An error occurred, please try again later. Ref: ${authenticatedUser.message}: ${authenticatedUser.error}`,
+        message: "The details entered don't match any account. Please try again",
       });
     }
   } catch (err) {
     setAlertMessage({
       isActive: true,
       severity: "error",
-      message: `An error occurred, please try again later. Ref: ${err}`,
+      message: "The details entered don't match any account. Please try again",
     });
   }
 };
@@ -182,10 +197,11 @@ export const addNewUser = async (
       });
     }
   } catch (err) {
+    const printErr = objToString(err) || err;
     setAlertMessage({
       isActive: true,
       severity: "error",
-      message: `An error occurred, please try again later. Ref: ${err}`,
+      message: `An error occurred, please try again later. Ref: ${printErr}`,
     });
   }
 };
@@ -246,10 +262,11 @@ export const editUser = async (
         });
       }
     } catch (err) {
+      const printErr = objToString(err) || err;
       setAlertMessage({
         isActive: true,
         severity: "error",
-        message: `An error occurred, please try again later. Ref: ${err}`,
+        message: `An error occurred, please try again later. Ref: ${printErr}`,
       });
     }
   }

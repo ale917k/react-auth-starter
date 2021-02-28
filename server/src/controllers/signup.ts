@@ -7,7 +7,7 @@ import { createSessions } from "./sessions";
 
 type ServerResponseType = {
   message: string;
-  result: UserDocument;
+  result: string;
   error: string;
 };
 
@@ -36,17 +36,16 @@ const handleSignup = (User: PassportLocalModel<UserDocument>, req: Request, res:
             html: req.body.messageHtml,
           };
 
-          transport.sendMail(registrationConfirmationEmail, (err, info) => {
+          transport.sendMail(registrationConfirmationEmail, (err) => {
             if (err) {
               reject({
                 message: "Failed Sending Email",
                 error: err,
               });
             } else {
-              const { hash, salt, ...newUser } = result;
               resolve({
                 message: "Created User Successfully",
-                result: newUser,
+                result: result._id,
               });
             }
           });
@@ -65,7 +64,7 @@ const handleSignup = (User: PassportLocalModel<UserDocument>, req: Request, res:
 // Register new user and generate new session
 const signupAuthentication = (User: PassportLocalModel<UserDocument>) => (req: Request, res: Response) => {
   handleSignup(User, req, res)
-    .then((data: ServerResponseType) => (data.result._id ? createSessions(data.result) : Promise.reject(data)))
+    .then((data: ServerResponseType) => (data.result ? createSessions(data.result) : Promise.reject(data)))
     .then((session) => res.status(201).json(session))
     .catch((err) => res.status(500).json(err));
 };

@@ -8,10 +8,13 @@
   "scripts": {
     "bundle": "cd client; npm run bundle",
     "client": "cd client; npm start",
+    "deploy": "cp docker-compose.prd.yml docker-compose.yml; ecs-cli compose --project-name react-auth-starter service up --cluster-config react-auth-starter --ecs-profile ras",
+    "dev": "cp docker-compose.dev.yml docker-compose.yml",
     "preinstall": "cd client; npm install --legacy-peer-deps; cd ../server; npm install",
-    "server": "cp docker-compose.dev.yml docker-compose.yml; docker-compose down; docker-compose up --build --remove-orphans",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "prod": "cp docker-compose.prd.yml docker-compose.yml"
+    "prd": "cp docker-compose.prd.yml docker-compose.yml",
+    "server": "docker-compose down; docker-compose up --build --remove-orphans",
+    "start": "concurrently --kill-others-on-fail \"npm run dev; npm run server\" \"npm run client\"",
+    "start:prd": "npm run prd; npm run server"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"

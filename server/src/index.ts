@@ -10,7 +10,7 @@ if (process.env.NODE_ENV !== "production") require("dotenv").config();
 // App configuration
 const app = express();
 const port = process.env.PORT || 8080;
-const baseURL = process.env.NODE_ENV === "development" ? "/api" : "";
+export const baseURL = process.env.NODE_ENV === "development" ? "/api" : "";
 
 // Middlewares
 app.use(cors());
@@ -18,11 +18,11 @@ app.use(express.json());
 app.use(`${baseURL}/users`, userAPI);
 
 // MongoDB configuration
-mongoose.Promise = global.Promise;
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   })
   .then(
     () => {
@@ -32,7 +32,6 @@ mongoose
       console.log("MongoDB could not be connected.", error);
     },
   );
-mongoose.set("useCreateIndex", true);
 
 // Passport Authentication
 // createStrategy is responsible to setup passport-local LocalStrategy with the correct options

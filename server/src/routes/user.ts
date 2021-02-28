@@ -2,7 +2,7 @@ import express from "express";
 import passport from "passport";
 import { NativeError } from "mongoose";
 import User from "../models/User";
-import signinAuthentication from "../controllers/signin";
+import { signinAuthentication, failedSignin } from "../controllers/signin";
 import signupAuthentication from "../controllers/signup";
 
 const router = express.Router();
@@ -33,11 +33,7 @@ router
 // Requests targetting a specific User
 router.post("/signin", signinAuthentication(User));
 
-router.get("/failedSignin", (_, res) => {
-  res.status(401).json({
-    error: "Unauthorized Access",
-  });
-});
+router.get("/failedSignin", failedSignin());
 
 router
   .route("/:userId")
