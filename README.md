@@ -55,7 +55,7 @@ This project has been set up with a production environment ready for deployment 
 
 Setup the following to have your own version:
 
-1. Create client and server images - See [doc](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html) - Make sure to build from the folders containing the `Dockerfile`s
+1. Push client and server images to `AWS ECR` - See [doc](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html) - Make sure to build from the folders containing the `Dockerfile`s
 2. Create, boot up and deploy your `ECS` cluster following this nicely crafted [doc](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-fargate.html)
 3. Once deployed, view the running containers (`ecs-cli compose service ps`) and copy the address port on the browser to check out the deployed project
 
