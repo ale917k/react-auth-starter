@@ -68,7 +68,7 @@ const Header: React.FC = () => {
           )}
         </ul>
 
-        <div className="mobile-menu" onClick={() => toggleMobileMenu()}>
+        <div className="mobile-menu" onClick={toggleMobileMenu}>
           <div className="burger-menu"></div>
         </div>
       </Container>
