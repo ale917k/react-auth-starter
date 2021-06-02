@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AppContext } from "../../../context/context";
 import Container from "../Container";
 import "./styles.scss";
@@ -11,11 +11,17 @@ import UserTypes from "../../../context/user/types";
  * @return - Logo and Menu elements.
  */
 const Header: React.FC = () => {
+  const location = useLocation();
+
   // Context for retrieving User state from AppContext and dispatching updates if User logs out
   const { state, dispatch } = useContext(AppContext);
 
   // Used for toggling mobile menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    isMenuOpen && setIsMenuOpen(false);
+  }, [location]);
 
   // Toggle mobile menu function
   const toggleMobileMenu = () => {
