@@ -47,7 +47,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <>
       <Header />
 
       <main className="main">
@@ -90,7 +90,7 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 };
 

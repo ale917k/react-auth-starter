@@ -1,11 +1,16 @@
 .account {
   .account-container {
     flex-direction: column;
-    justify-content: center;
+    height: auto;
+    max-height: 100%;
+    padding: 30px 15px;
+    overflow: auto;
 
     .card-wrapper {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-evenly;
+      gap: 30px;
       width: 100%;
     }
   }

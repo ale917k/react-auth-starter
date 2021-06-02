@@ -3,8 +3,10 @@
   padding: 2rem;
   border-radius: 5px;
   border: 1px solid var(--color-border);
+  max-width: 80%;
 
   form {
     width: 300px;
+    max-width: 100%;
   }
 }
