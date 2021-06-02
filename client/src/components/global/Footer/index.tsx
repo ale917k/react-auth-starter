@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
     <footer className="footer">
       <Container className="footer-container">
         <div className="copyright">
-          <p>@{year} CompanyName. All rights reserved</p>
+          <p>@{year} CompanyName</p>
         </div>
         <div className="created-by">
           Design and Development:{" "}

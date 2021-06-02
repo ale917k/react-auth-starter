@@ -23,10 +23,8 @@
   .footer {
     .footer-container {
       flex-direction: column;
-
-      .copyright {
-        margin-bottom: 1rem;
-      }
+      justify-content: center;
+      gap: 5px;
     }
   }
 }
