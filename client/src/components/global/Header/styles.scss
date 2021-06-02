@@ -102,9 +102,10 @@
   }
 
   .mobile-menu {
+    display: none;
+    margin-right: 0.5rem;
     padding: 15px 5px;
     cursor: pointer;
-    display: none;
 
     .burger-menu {
       position: relative;
